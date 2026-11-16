@@ -1,5 +1,19 @@
 # 山中城 WebKit baseline
 
+## Stage 1追補（2026-11-17 JST）
+
+[B6d独立監査報告](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#issuecomment-6931792523)とPR本文を直接読み取った。監査対象は固定HEAD `aa3688f312f46f4db7faace8e7e1d200cdf9b78e` / tree `ea6f733c50c06ba57c38637763ef64399c15d126`。38 ZIPの保存後独立照合PASS、限定コード・内容監査PASS、代表画像4/48目視済みという一次報告である。同じ八兵衛内の担当分離であり、dot全体にはB6c関与がある。今回の横断担当自身は原ZIPの再取得・再監査を行っていない。
+
+Vary4原票の要求Accept→サーバー選択→異なる本文/ETag/識別子→採取entity→画面first/second対応を確認したとの報告。synthetic限定で、本番使用全byteの証明ではない。他34本の意味監査NOT_TESTED、root manifestなし28本の網羅性UNKNOWN、全48画像の目視未完を維持する。初回200の1件はbody-startがfinished観測の約1.126 ms前だが、304の8件は全て後。304前後介入成立とは扱わない。
+
+PRメタデータの観測HEADは `7c4442e319e19950799d813524038b8474bc69a5`、open/Draft。本文はB6e着手を報告している。これは監査済みaa3688f3と別版で、B6dの53試験や19 runの結果を現在HEADへ転用しない。B6eのコード差分・新CI・原証拠は本追補で審査していない。次は既存B6e工程の結果を受け取り、未完404の待機段階と終端を確認する。重複する実験を横断側で開始しない。
+
+正式ブラウザ受入FAIL、総合PARTIAL、限定マージNO、304代替契約NOT_ADOPTED、Stage 3-B HOLDを維持する。[次観測の条件](../investigations/stage1-next-observations.md)を参照。
+
+---
+
+以下はStage 0観測時点の記録。独立監査PENDING・画像目視NOT_TESTED等は当時の状態であり、上記追補の監査報告範囲と区別する。
+
 ## 確認方法と版
 
 Stage 0ではGitHub APIのrepository、main commit、open PR、recursive tree、Actions、および固定HEADのworkflow・計画文書・投稿済み追補を読み取り確認した。今回ブラウザ再実行、原ZIP取得、独立バイト監査は行っていない。以下の再現・保全成功は既存一次報告の確認であり、Stage 0自身の再現／再監査ではない。

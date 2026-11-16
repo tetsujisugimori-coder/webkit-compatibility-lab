@@ -4,9 +4,11 @@ Stage 0 is a documentation baseline, not a root-cause fix or browser acceptance 
 
 ## Repository identity and submission state
 
-The repository is [tetsujisugimori-coder/webkit-compatibility-lab](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab). Initial observation found a leading-hyphen name; the owner subsequently renamed it. A second GitHub read confirmed the same repository ID under the corrected name. The assistant did not rename it.
+Stage 0 was merged through [PR #1](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/1), merge commit `c84ac9e5077ef5e56f6242876c4a1dfd0a1c4858`, tree `d7fef0a0fcfdfccf6187a0c69d2f95ebc3994771`. This was limited acceptance of the documentation baseline; technical failures and project HOLDs remain. Earlier submission decisions are preserved in the baseline history.
 
-The initial empty-repository blocker was resolved by an owner-created initial commit. The current base is main commit `e9177268a29d3e9f77ea8bfb2176f4c43b3c969e`, tree `6a2bcd7c94dad71bb1f8e8d5b5fa4e928abc2ef4`, containing only the original 26-byte README. The assistant did not initialize or change main. The owner explicitly approved proceeding with a documentation Draft PR. These documents are proposed on `docs/stage0-webkit-baseline`; no merge is authorized. See the submission supplement for the check boundary.
+[Stage 1: evidence update and next observations](docs/investigations/stage1-next-observations.md) separates the completed B6d audit report from ongoing B6e work and defines project-specific questions before any shared harness.
+
+Repository: [tetsujisugimori-coder/webkit-compatibility-lab](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab). The owner created the initial main commit before Stage 0. The original initialization and submission decisions remain historical records in [the submission supplement](docs/baseline/SUBMISSION.md).
 
 ## Scope
 
