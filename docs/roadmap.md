@@ -24,3 +24,8 @@ The following is retained verbatim as the original planning state. Outstanding/p
 7. Design a minimal cross-project harness only after separate review: bounded resources, stable environment, cache/routing controls, independently fixed expected outputs, privacy-safe capture, failure preservation, and independent custody audit. New CI, browsers, dependencies and real experiments remain NOT_TESTED and unapproved by Stage 0.
 
 Do not unify causes solely because WebKit fails. A common experiment is justified only when evidence identifies a shared mechanism and comparable conditions. Each project's acceptance remains separate.
+
+
+## Stage 1 current supplement (2026-11-17)
+
+B6e completion is now received, not pending. Use the [versioned evidence ledger](investigations/stage1-evidence-ledger.md) and [comparison gates](investigations/stage1-comparison-gates.md). Priority: existing completion-notification records/source mapping; Loading slot-level originals; Round14 timing-budget evidence; the separately assigned Atlas one-candidate review. None authorizes a new experiment. Earlier roadmap entries remain historical.

@@ -64,3 +64,8 @@ B6d正式原ZIP38本、計2,664,979,874 bytes。公式size/digest/SHA/CRCと保�
 ## AGENTS・容量方針の確認範囲
 
 [対象HEADのAGENTS.md](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/blob/aa3688f312f46f4db7faace8e7e1d200cdf9b78e/AGENTS.md)全文を読み取った。小規模PR、大容量原本の無条件複製禁止、bytes/inode/実効書込先・容量余裕の事前確認、案件別Temp、既存証拠の削除・移動禁止、保存後実物の独立読戻しと技術受入の別ゲートを確認。Stage 0は文書／APIメタデータのみで、大容量ZIP・HAR・traceの再取得はしない。容量方針が参照する別リポジトリの運用実装を山中城へ適用済みとは扱わない。
+
+
+## Stage 1 current supplement (2026-11-17)
+
+Latest PR metadata and public final reports were reread for the [evidence ledger](../investigations/stage1-evidence-ledger.md). It distinguishes directly read source/metadata from cited observations and unacquired originals. Earlier results above remain attached to their historical versions. [Next comparison gates](../investigations/stage1-comparison-gates.md) do not change this project’s FAIL/UNKNOWN/HOLD or authorize execution.

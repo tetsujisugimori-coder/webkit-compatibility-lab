@@ -54,3 +54,8 @@ API auditの技術整合性PASSと68/72完了による非ゼロ終了を区別�
 ## 作業規則の確認範囲
 
 固定remote HEADの再帰Git tree（truncated=false）でAGENTS.md、およびcapacity/storage-policy/容量を名前に含む文書は見つからなかった。容量規則が存在しないとの断定ではなく、命名検索での未発見である。大容量原物の取得・展開・削除は行っていない。
+
+
+## Stage 1 current supplement (2026-11-17)
+
+Latest PR metadata and public final reports were reread for the [evidence ledger](../investigations/stage1-evidence-ledger.md). It distinguishes directly read source/metadata from cited observations and unacquired originals. Earlier results above remain attached to their historical versions. [Next comparison gates](../investigations/stage1-comparison-gates.md) do not change this project’s FAIL/UNKNOWN/HOLD or authorize execution.

@@ -6,7 +6,7 @@ Stage 0 is a documentation baseline, not a root-cause fix or browser acceptance 
 
 Stage 0 was merged through [PR #1](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/1), merge commit `c84ac9e5077ef5e56f6242876c4a1dfd0a1c4858`, tree `d7fef0a0fcfdfccf6187a0c69d2f95ebc3994771`. This was limited acceptance of the documentation baseline; technical failures and project HOLDs remain. Earlier submission decisions are preserved in the baseline history.
 
-[Stage 1: evidence update and next observations](docs/investigations/stage1-next-observations.md) separates the completed B6d audit report from ongoing B6e work and defines project-specific questions before any shared harness.
+[Stage 1: evidence update and next observations](docs/investigations/stage1-next-observations.md) preserves the historical proposal. The [Stage 1 evidence ledger](docs/investigations/stage1-evidence-ledger.md) now records the completed B6e report separately from B6d, and the [comparison/start gates](docs/investigations/stage1-comparison-gates.md) identify concrete missing evidence. No new experiments or shared harness have been run.
 
 Repository: [tetsujisugimori-coder/webkit-compatibility-lab](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab). The owner created the initial main commit before Stage 0. The original initialization and submission decisions remain historical records in [the submission supplement](docs/baseline/SUBMISSION.md).
 
@@ -35,3 +35,4 @@ Per the owner's Stage 0 instruction, WebKit success is temporarily not a univers
 - [Roadmap](docs/roadmap.md)
 
 Source projects retain ownership of test code, original evidence, and acceptance decisions. This lab does not import their raw artifacts or modify their repositories.
+
