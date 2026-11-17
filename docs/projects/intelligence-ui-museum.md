@@ -57,3 +57,8 @@
 ## 作業規則の確認範囲
 
 最新mainの[AGENTS.md](https://github.com/tetsujisugimori-coder/intelligence-ui-museum/blob/f065515b3f52ade79a7e057abb86f385dfcce5e9/AGENTS.md)を全文読取。歴史証拠の保護、Stage 3 HOLD、製品/runner/証拠/環境障害の区別、独立レビューの分離、秘密情報非公開などを確認した。再帰Git tree（truncated=false）のcapacity/storage-policy/容量の命名検索で専用容量方針は見つからなかった。全文横断の不存在証明ではない。大容量原物の取得・展開・削除は行っていない。
+
+
+## Stage 1 current supplement (2026-11-17)
+
+Latest PR metadata and public final reports were reread for the [evidence ledger](../investigations/stage1-evidence-ledger.md). It distinguishes directly read source/metadata from cited observations and unacquired originals. Earlier results above remain attached to their historical versions. [Next comparison gates](../investigations/stage1-comparison-gates.md) do not change this project’s FAIL/UNKNOWN/HOLD or authorize execution.

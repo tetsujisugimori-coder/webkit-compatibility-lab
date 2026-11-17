@@ -49,3 +49,8 @@ v4〜v6およびc54 nativeの原ZIPは保存後の独立全byte／SHA／CRC／ma
 ## AGENTS・容量方針の確認範囲
 
 [対象HEADのAGENTS.md](https://github.com/tetsujisugimori-coder/historical-source-atlas/blob/97ce39e8cb9ea38967354aea11cac2282097d7cf/AGENTS.md)全文を読み取った。記事ID・出典保全、史料記述と史実認定の分離、専用branch／Draft PR／独立レビューの方針を確認。AGENTS自体に詳細な容量節はない。今回全文確認したPLAN-v6には最低2GiB・1024 inode、専用Temp、書込検査、3GiB予約、測定不能時停止、既存証拠削除禁止が記載されるが、これはv6固有の事前計画であり全工程へ一律転用しない。Stage 0は文書／APIメタデータのみで、大容量ZIP・HAR・trace再取得はしない。
+
+
+## Stage 1 current supplement (2026-11-17)
+
+Latest PR metadata and public final reports were reread for the [evidence ledger](../investigations/stage1-evidence-ledger.md). It distinguishes directly read source/metadata from cited observations and unacquired originals. Earlier results above remain attached to their historical versions. [Next comparison gates](../investigations/stage1-comparison-gates.md) do not change this project’s FAIL/UNKNOWN/HOLD or authorize execution.
