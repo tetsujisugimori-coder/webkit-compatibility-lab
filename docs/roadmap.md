@@ -1,3 +1,7 @@
+## Stage 2-A current supplement — 2026-11-17
+
+Stage 1 PR #2 is merged at `66d56436591b8f935a2f3515c4618d513a8473ff`. Earlier current/pending statements below are historical snapshots, not current execution permission. [Stage 2-A B6f evidence intake](investigations/stage2a-b6f-evidence-intake.md) separates direct source reads, cited observations and unacquired originals. B6g is a separate version; no new experiments or source-project changes. FAIL/UNKNOWN/HOLD remain.
+
 # Roadmap
 
 ## Current Stage 1 follow-up — 2026-11-17 JST
