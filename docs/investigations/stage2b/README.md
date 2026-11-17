@@ -22,7 +22,7 @@ Two Library originals were newly reacquired into a separate case directory and c
 | failure artifact14321924744 |744571|`fcfad6fbdf5bf5da1b4fd5bc5938ea1a982a21a3fbc03e0caca0966a72a22cc3`|344/343|
 | B6g closeout |84210|`b1a3ba318e7d0031bee48d41e72934d5c3194ce333aa02bcd01982bf61eb237c`|13/12|
 
-Failure artifact maps to push run44071325311, WebKit job133998000707. Archive identity confirms source HEAD/tree. Stored source-before and unit/exit logs were read without execution. Fresh GitHub recursive tree (truncated=false) matches all334 source-before Git blobs (`source-match.json`); this does not prove production-used bytes. Prior38-archive custody (2,290,938,171bytes;10 manifests,28 absent) is **R**, not a new38-archive audit. Saving this intake will not convert other36 into fresh acquisition PASS.
+Failure artifact maps to push run44071325311, WebKit job133998000707. Archive identity confirms source HEAD/tree. Stored source-before and unit/exit logs were read without execution. Fresh GitHub recursive tree (truncated=false) matches all334 source-before Git blobs (`source-match.json`); this does not prove production-used bytes. Prior38-archive custody (2,290,938,171bytes;10 manifests,28 absent) is **R**, not a new38-archive audit. Saving this intake will not convert other37 into fresh acquisition PASS.
 
 ## F. G1–G5
 - G1 UNKNOWN formally: reviewed source starts individual45s/global180s budgets before launch, reserves cleanup10s/TERM1s/audit1s and uses outer supervisor. Configuration/code is not runtime proof. The formal synthetic normal configuration instead uses1.8s/4s, reserve0.7s/TERM0.15s/audit0.15s. Python communication timeout6s does not locate supervisor phase or prove deadline escape.
