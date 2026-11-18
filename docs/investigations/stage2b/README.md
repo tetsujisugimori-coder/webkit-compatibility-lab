@@ -1,5 +1,8 @@
 # Stage 2-B: B6g existing-evidence intake (2026-11-17)
 
+> **2026-11-18 P2-R3 follow-up (latest status):** New ledger-aggregate false-PASS finding **P2-R3 OPEN / patch submitted / independent re-review PENDING**. The original limited-merge recommendation below is a historical verdict for HEAD `5846374a...`, **not a current merge authorization**. `test_verify.py` includes new regression cases, but the old five-test log predates this patch; post-patch Python execution is **NOT_TESTED**. **P2-R1/P2-R2 remain CLOSED.** Source formal safety/browser FAIL, Stage 3-B HOLD, source merge NO remain unchanged. [New review](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/4#pullrequestreview-5955991611).
+
+
 ## A. Verdict and scope
 Overall **PARTIAL**. Evidence intake PARTIAL; Git/CI identity PASS; two reacquired ZIP integrity PASS (self-check); historical local safety limited PASS; formal safety FAIL; formal browser acceptance FAIL; root cause and production-used bytes UNKNOWN. Document-only acceptance is separate: [independent review](INDEPENDENT-REVIEW.md) limited PASS after two verifier findings were corrected. No source runner/test/browser execution, installation, workflow dispatch, source modification or merge occurred. Offline ledger tests are not network experiments or CI. Five unittest methods cover one valid ledger,27 mutated-ledger failures, one valid archive and8 archive faults. ZIP adversarial controls include traversal, duplicates, symlinks, CRC corruption, missing/empty manifest, missing/extra files and changed bytes.
 
@@ -47,3 +50,14 @@ Independent review and new bundle readback are separately recorded in the review
 Prioritize **案2: independent implementation review of outer timeout and evidence packaging**, not implementation here. Concrete basis:38 retained archives lack case records; current failure path cannot persist post-call summaries and workflow excludes their directory. Further recovery is conditional on discovery of a named retained source; it is not declared impossible. Review durable outer-watchdog/exception checkpoints, PID-birth/phase, bounded cleanup and correct artifact inclusion. Simple6s extension/retry cannot erase FAIL. A separately authorized new safety proof and independent review must precede browser work.
 
 Lab-only document merge recommendation YES subject to submitted-head readback and new bundle custody; source merge remains NO. New Draft PR only; no Draft release or merge. Formal CI for this new lab change is reported separately after submission.
+
+## P2-R3 follow-up: aggregate false-PASS acceptance (2026-11-18)
+
+Independent follow-up review identified a **new** verifier gap; this is **P2-R3**, not a reopening of P2-R1 or P2-R2. Both earlier findings remain **CLOSED** within their original scopes.
+
+- **Counterexample A:** remove an artifact-unreferenced job (e.g. `job_id=133998029071`): the 42-job receipt shrinks to 41 without breaking artifact-to-job references. The old verifier checked no job count.
+- **Counterexample B:** change successful PR `run_id=44071333927` to `push` and change the corresponding artifact event: PR15/push4 becomes PR14/push5 while cross-references stay aligned. The old verifier checked success/failure totals but not event/conclusion distribution.
+- **Patch:** `verify.py` now requires exactly 42 jobs and the recorded event/conclusion pairs (PR success14/failure1, push success3/failure1). `test_verify.py` includes a normal-ledger check and both new fault regressions.
+- **Verification status:** the structural checks are reviewed against the fixed receipt data, but the new Python tests have **NOT_TESTED** execution status in this follow-up. Existing `test-results.txt` remains the historical five-method log, not evidence that the new cases ran. A separately executed test run and independent re-review are required to mark **P2-R3 CLOSED** and restore a limited-merge YES.
+
+This patch does not change source artifacts, their audit scope, any formal safety/browser outcomes, or browser-start permissions. Overall **PARTIAL**; lab PR #4 remains **Draft / merge HOLD** pending P2-R3 closure.
