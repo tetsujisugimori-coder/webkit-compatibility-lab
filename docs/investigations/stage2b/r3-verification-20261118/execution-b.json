@@ -1,0 +1,117 @@
+{
+  "actor": "B independent AI child B independent session",
+  "independence": "separate agent, acquisition, execution and directory; shared platform/account/filesystem/history, not independent human or credential audit",
+  "head": "118061e840471715253be7b413a78995a4c5be55",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "acquisition": "separate HTTPS git clone from GitHub",
+  "inputs": {
+    "verify.py": {
+      "bytes": 6736,
+      "sha256": "a2bf058b433a7ec22e4c4a01cf9dc424930ac520237b07a65ea851e7cf4d7210",
+      "blob": "69a1c04d1eb03f036a00a140e07d0845b1e9f2a4"
+    },
+    "source-match.json": {
+      "bytes": 75842,
+      "sha256": "3db6dab23ee70fa5525808de197fe63b047ad92f935d0d9bb402385b3050332f",
+      "blob": "2a4629c7fbe8139c0e1ef282960815b87f4de78d"
+    },
+    "test-results.txt": {
+      "bytes": 425,
+      "sha256": "acaaf35d1d0a8f3f27be2fdb9822e8bfa6330aff7202663e0e79e8cce788b086",
+      "blob": "89a8bf3876ed3f2b484f63c5e4d67acc6b8da65f"
+    },
+    "recovery-scan.json": {
+      "bytes": 3166,
+      "sha256": "c44a77b428ee8d0fd48be251b1b9fc30891413ba95813797c832f60bd93bc960",
+      "blob": "0017dd23ad18ac24cc7bc0a28faf7a036fc0781c"
+    },
+    "ledger.json": {
+      "bytes": 49109,
+      "sha256": "e3d092ef8cc449036a6be47b1f19e70ed022efd1f4489b31b7a7537591f68249",
+      "blob": "52ebc07037fc2b50e3564f978d3b014179b757e1"
+    },
+    "INDEPENDENT-REVIEW.md": {
+      "bytes": 6616,
+      "sha256": "7857262fcdd2742449eb0c7539a165ba8f711a8d3b9ee74224435f58427cc736",
+      "blob": "8ea6f5162bd71d68a793f84ae5fcd974894576c1"
+    },
+    "test_verify.py": {
+      "bytes": 4758,
+      "sha256": "1632fc3c71733891a677b086c8686c454c3fbf28284051a0533b177774cfaf99",
+      "blob": "4525c931a8f931455f4c06e66c691238b8ff300e"
+    },
+    "README.md": {
+      "bytes": 11035,
+      "sha256": "f0eef13ad24a564cc7e93f860febd2850e269b1ce7954a928242389b404fb343",
+      "blob": "c8007768a7fd23d8b5def50565ef47083046ec4c"
+    }
+  },
+  "operations": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "-v",
+        "test_verify.py"
+      ],
+      "start": "2026-11-18T12:07:58.183071+00:00",
+      "timeout_seconds": 20,
+      "retries": 0,
+      "end": "2026-11-18T12:07:58.325596+00:00",
+      "stdout": "",
+      "stderr": "test_archive (test_verify.LedgerTests.test_archive) ... ok\ntest_archive_adversarial (test_verify.LedgerTests.test_archive_adversarial) ... ok\ntest_faults (test_verify.LedgerTests.test_faults) ... ok\ntest_identity_swaps (test_verify.LedgerTests.test_identity_swaps) ... ok\ntest_p2_r3_aggregate_invariants (test_verify.LedgerTests.test_p2_r3_aggregate_invariants) ... ok\ntest_valid (test_verify.LedgerTests.test_valid) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.023s\n\nOK\n",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "verify.py"
+      ],
+      "start": "2026-11-18T12:07:58.325627+00:00",
+      "timeout_seconds": 20,
+      "retries": 0,
+      "end": "2026-11-18T12:07:58.353148+00:00",
+      "stdout": "PASS: offline record consistency only; formal safety remains FAIL\n",
+      "stderr": "",
+      "exit_code": 0
+    }
+  ],
+  "normal": {
+    "counts": {
+      "runs": 19,
+      "jobs": 42,
+      "artifacts": 38
+    },
+    "distribution": {
+      "pull_request/success": 14,
+      "pull_request/failure": 1,
+      "push/success": 3,
+      "push/failure": 1
+    },
+    "actual": "PASS: offline record consistency only; formal safety remains FAIL",
+    "expected": "PASS offline record consistency only; formal safety remains FAIL"
+  },
+  "counterexamples": [
+    {
+      "case": "R3-A",
+      "input_sha256": "b5a57ee5450502263639370b5325cf8e2f0d0d346d00f3575cec026da6aef0a8",
+      "expected_rejection": "formal history counts",
+      "start": "2026-11-18T12:07:58.361068+00:00",
+      "actual_rejection": "formal history counts",
+      "test_status": "PASS",
+      "end": "2026-11-18T12:07:58.361120+00:00"
+    },
+    {
+      "case": "R3-B",
+      "input_sha256": "5af1e14132d6094d3d054bb3a4cc7f4835fe09162d0d51c19f5fdbbcf13abcbc",
+      "expected_rejection": "run event/conclusion totals",
+      "start": "2026-11-18T12:07:58.362738+00:00",
+      "actual_rejection": "run event/conclusion totals",
+      "test_status": "PASS",
+      "end": "2026-11-18T12:07:58.362790+00:00"
+    }
+  ],
+  "ledger_unchanged": true
+}

@@ -36,3 +36,7 @@ Per the owner's Stage 0 instruction, WebKit success is temporarily not a univers
 
 Source projects retain ownership of test code, original evidence, and acceptance decisions. This lab does not import their raw artifacts or modify their repositories.
 
+
+## Stage 2-B supplement
+
+[B6g existing-evidence intake](docs/investigations/stage2b/README.md): formal safety/browser FAIL preserved; no new browser or source tests.

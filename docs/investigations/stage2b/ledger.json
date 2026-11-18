@@ -1,0 +1,1332 @@
+{
+  "schema": 1,
+  "source_head": "16e26b3381763269dfc9d2360670b57726db996d",
+  "source_tree": "c2f1b07f938535d91acd0f94ec3d2d31b4a4a1a9",
+  "merge_checkout": "16573d8f532da1c31de73b3cf8c8b9da02ea039a",
+  "merge_tree": "c2f1b07f938535d91acd0f94ec3d2d31b4a4a1a9",
+  "lab_base": "44c832da8f1a864570c4b8966c74bfd420367a06",
+  "lab_tree": "f7577e293f4be88b42f7684aa133b57e8613ef5b",
+  "evidence": [
+    {
+      "bytes": 744571,
+      "sha256": "fcfad6fbdf5bf5da1b4fd5bc5938ea1a982a21a3fbc03e0caca0966a72a22cc3",
+      "entries": 344,
+      "manifest_files": 343,
+      "crc": "PASS",
+      "manifest": "PASS",
+      "unsafe_paths": false,
+      "duplicates": false,
+      "symlinks": false,
+      "id": "failure-original",
+      "basis": "D",
+      "acquired": true,
+      "integrity": "PASS",
+      "stage": "B6g",
+      "commit": "16e26b3381763269dfc9d2360670b57726db996d",
+      "tree": "c2f1b07f938535d91acd0f94ec3d2d31b4a4a1a9",
+      "source": "owner Library reobtained",
+      "destination": "case-specific received area (private)",
+      "readback": "byte-identical to retained original",
+      "reviewer": "implementer self-check",
+      "independent": false,
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#issuecomment-6947192938",
+      "reason": "Fresh read-only bytes/SHA/CRC/full manifest audit; does not certify all 38 archives"
+    },
+    {
+      "bytes": 84210,
+      "sha256": "b1a3ba318e7d0031bee48d41e72934d5c3194ce333aa02bcd01982bf61eb237c",
+      "entries": 13,
+      "manifest_files": 12,
+      "crc": "PASS",
+      "manifest": "PASS",
+      "unsafe_paths": false,
+      "duplicates": false,
+      "symlinks": false,
+      "id": "closeout",
+      "basis": "D",
+      "acquired": true,
+      "integrity": "PASS",
+      "stage": "B6g",
+      "commit": "16e26b3381763269dfc9d2360670b57726db996d",
+      "tree": "c2f1b07f938535d91acd0f94ec3d2d31b4a4a1a9",
+      "source": "owner Library reobtained",
+      "destination": "case-specific received area (private)",
+      "readback": "byte-identical to retained original",
+      "reviewer": "implementer self-check",
+      "independent": false,
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#issuecomment-6947192938",
+      "reason": "Fresh read-only bytes/SHA/CRC/full manifest audit; does not certify all 38 archives"
+    },
+    {
+      "id": "api",
+      "basis": "D",
+      "acquired": false,
+      "integrity": "NOT_TESTED",
+      "reason": "Current GitHub GET run/job/artifact metadata and commit trees",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions",
+      "bytes": null,
+      "sha256": null,
+      "crc": "NOT_TESTED",
+      "manifest": "NOT_TESTED"
+    },
+    {
+      "id": "local-review",
+      "basis": "R",
+      "acquired": false,
+      "integrity": "NOT_TESTED",
+      "reason": "Prior implementation-independent AI local review, six controls, not rerun",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#issuecomment-6946367339",
+      "bytes": null,
+      "sha256": null,
+      "crc": "NOT_TESTED",
+      "manifest": "NOT_TESTED"
+    },
+    {
+      "id": "historical-custody",
+      "basis": "R",
+      "acquired": false,
+      "integrity": "NOT_TESTED",
+      "reason": "Prior independent 38 ZIP custody, 2290938171 bytes; 10 manifests, 28 without manifests",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#issuecomment-6947192938",
+      "bytes": null,
+      "sha256": null,
+      "crc": "NOT_TESTED",
+      "manifest": "NOT_TESTED"
+    },
+    {
+      "id": "b6f",
+      "basis": "R",
+      "acquired": false,
+      "integrity": "NOT_TESTED",
+      "reason": "Inherited Stage2-A B6f four raw records/eight rows; no new B6f runtime observation",
+      "url": "../stage2a-b6f-evidence-intake.md",
+      "bytes": null,
+      "sha256": null,
+      "crc": "NOT_TESTED",
+      "manifest": "NOT_TESTED"
+    },
+    {
+      "id": "retained-scan",
+      "basis": "D",
+      "acquired": true,
+      "integrity": "PARTIAL",
+      "reason": "Read central directories of 38 retained originals; no requested runtime per-case files found; not fresh Library acquisition or full integrity audit",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55",
+      "bytes": null,
+      "sha256": null,
+      "crc": "NOT_TESTED",
+      "manifest": "NOT_TESTED"
+    }
+  ],
+  "runs": [
+    {
+      "run_id": 44071333927,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333927"
+    },
+    {
+      "run_id": 44071333904,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333904"
+    },
+    {
+      "run_id": 44071334023,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334023"
+    },
+    {
+      "run_id": 44071333901,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333901"
+    },
+    {
+      "run_id": 44071334185,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334185"
+    },
+    {
+      "run_id": 44071334293,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334293"
+    },
+    {
+      "run_id": 44071333960,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333960"
+    },
+    {
+      "run_id": 44071333947,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333947"
+    },
+    {
+      "run_id": 44071334035,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334035"
+    },
+    {
+      "run_id": 44071333914,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "failure",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333914"
+    },
+    {
+      "run_id": 44071333911,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333911"
+    },
+    {
+      "run_id": 44071334135,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334135"
+    },
+    {
+      "run_id": 44071333974,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333974"
+    },
+    {
+      "run_id": 44071334019,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334019"
+    },
+    {
+      "run_id": 44071333912,
+      "event": "pull_request",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333912"
+    },
+    {
+      "run_id": 44071325402,
+      "event": "push",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325402"
+    },
+    {
+      "run_id": 44071325311,
+      "event": "push",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "failure",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325311"
+    },
+    {
+      "run_id": 44071325358,
+      "event": "push",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325358"
+    },
+    {
+      "run_id": 44071325440,
+      "event": "push",
+      "head": "16e26b3381763269dfc9d2360670b57726db996d",
+      "attempt": 1,
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325440"
+    }
+  ],
+  "jobs": [
+    {
+      "job_id": 133998029071,
+      "run_id": 44071333927,
+      "attempt": 1,
+      "name": "custody",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333927/job/133998029071"
+    },
+    {
+      "job_id": 133998028550,
+      "run_id": 44071333904,
+      "attempt": 1,
+      "name": "evidence",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333904/job/133998028550"
+    },
+    {
+      "job_id": 133998029737,
+      "run_id": 44071334023,
+      "attempt": 1,
+      "name": "build",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334023/job/133998029737"
+    },
+    {
+      "job_id": 133999661285,
+      "run_id": 44071334023,
+      "attempt": 1,
+      "name": "deploy",
+      "conclusion": "skipped",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334023/job/133999661285"
+    },
+    {
+      "job_id": 133998028652,
+      "run_id": 44071333901,
+      "attempt": 1,
+      "name": "overview",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333901/job/133998028652"
+    },
+    {
+      "job_id": 133998029781,
+      "run_id": 44071334185,
+      "attempt": 1,
+      "name": "physical-terrain",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334185/job/133998029781"
+    },
+    {
+      "job_id": 133998030847,
+      "run_id": 44071334293,
+      "attempt": 1,
+      "name": "castle-exploration",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334293/job/133998030847"
+    },
+    {
+      "job_id": 133998029361,
+      "run_id": 44071333960,
+      "attempt": 1,
+      "name": "inferred (webkit)",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333960/job/133998029361"
+    },
+    {
+      "job_id": 133998029699,
+      "run_id": 44071333960,
+      "attempt": 1,
+      "name": "inferred (chromium)",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333960/job/133998029699"
+    },
+    {
+      "job_id": 133998028928,
+      "run_id": 44071333947,
+      "attempt": 1,
+      "name": "connected-defences",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333947/job/133998028928"
+    },
+    {
+      "job_id": 133998029809,
+      "run_id": 44071334035,
+      "attempt": 1,
+      "name": "evidence",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334035/job/133998029809"
+    },
+    {
+      "job_id": 133998028649,
+      "run_id": 44071333914,
+      "attempt": 1,
+      "name": "inferred (chromium)",
+      "conclusion": "failure",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333914/job/133998028649"
+    },
+    {
+      "job_id": 133998029259,
+      "run_id": 44071333914,
+      "attempt": 1,
+      "name": "inferred (webkit)",
+      "conclusion": "failure",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333914/job/133998029259"
+    },
+    {
+      "job_id": 133998028535,
+      "run_id": 44071333911,
+      "attempt": 1,
+      "name": "limited (chromium)",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333911/job/133998028535"
+    },
+    {
+      "job_id": 133998029263,
+      "run_id": 44071333911,
+      "attempt": 1,
+      "name": "limited (webkit)",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333911/job/133998029263"
+    },
+    {
+      "job_id": 133998029456,
+      "run_id": 44071334135,
+      "attempt": 1,
+      "name": "independent-ad-separation",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334135/job/133998029456"
+    },
+    {
+      "job_id": 133998030111,
+      "run_id": 44071334135,
+      "attempt": 1,
+      "name": "phase3b-browser",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334135/job/133998030111"
+    },
+    {
+      "job_id": 133998028876,
+      "run_id": 44071333974,
+      "attempt": 1,
+      "name": "controlled-comparison",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333974/job/133998028876"
+    },
+    {
+      "job_id": 133998029757,
+      "run_id": 44071333974,
+      "attempt": 1,
+      "name": "integration",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333974/job/133998029757"
+    },
+    {
+      "job_id": 133998029240,
+      "run_id": 44071334019,
+      "attempt": 1,
+      "name": "initial-camera",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334019/job/133998029240"
+    },
+    {
+      "job_id": 133998029540,
+      "run_id": 44071334019,
+      "attempt": 1,
+      "name": "review-fixes",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334019/job/133998029540"
+    },
+    {
+      "job_id": 133998029574,
+      "run_id": 44071334019,
+      "attempt": 1,
+      "name": "fixed-view-controls",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334019/job/133998029574"
+    },
+    {
+      "job_id": 133998029579,
+      "run_id": 44071334019,
+      "attempt": 1,
+      "name": "fixed-sections",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334019/job/133998029579"
+    },
+    {
+      "job_id": 133998029673,
+      "run_id": 44071334019,
+      "attempt": 1,
+      "name": "browser",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334019/job/133998029673"
+    },
+    {
+      "job_id": 133998029792,
+      "run_id": 44071334019,
+      "attempt": 1,
+      "name": "data-and-build",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334019/job/133998029792"
+    },
+    {
+      "job_id": 133998030435,
+      "run_id": 44071334019,
+      "attempt": 1,
+      "name": "landscape-1590",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071334019/job/133998030435"
+    },
+    {
+      "job_id": 133998029758,
+      "run_id": 44071333912,
+      "attempt": 1,
+      "name": "diagnose-render-cost",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333912/job/133998029758"
+    },
+    {
+      "job_id": 133998030105,
+      "run_id": 44071333912,
+      "attempt": 1,
+      "name": "inner-observation",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333912/job/133998030105"
+    },
+    {
+      "job_id": 133998030252,
+      "run_id": 44071333912,
+      "attempt": 1,
+      "name": "appearance-and-performance",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333912/job/133998030252"
+    },
+    {
+      "job_id": 133998030354,
+      "run_id": 44071333912,
+      "attempt": 1,
+      "name": "independent-visual",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071333912/job/133998030354"
+    },
+    {
+      "job_id": 133998000481,
+      "run_id": 44071325402,
+      "attempt": 1,
+      "name": "overview",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325402/job/133998000481"
+    },
+    {
+      "job_id": 133998000362,
+      "run_id": 44071325311,
+      "attempt": 1,
+      "name": "inferred (chromium)",
+      "conclusion": "failure",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325311/job/133998000362"
+    },
+    {
+      "job_id": 133998000707,
+      "run_id": 44071325311,
+      "attempt": 1,
+      "name": "inferred (webkit)",
+      "conclusion": "failure",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325311/job/133998000707"
+    },
+    {
+      "job_id": 133998000575,
+      "run_id": 44071325358,
+      "attempt": 1,
+      "name": "initial-camera",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325358/job/133998000575"
+    },
+    {
+      "job_id": 133998001000,
+      "run_id": 44071325358,
+      "attempt": 1,
+      "name": "browser",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325358/job/133998001000"
+    },
+    {
+      "job_id": 133998001043,
+      "run_id": 44071325358,
+      "attempt": 1,
+      "name": "data-and-build",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325358/job/133998001043"
+    },
+    {
+      "job_id": 133998001123,
+      "run_id": 44071325358,
+      "attempt": 1,
+      "name": "fixed-view-controls",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325358/job/133998001123"
+    },
+    {
+      "job_id": 133998001164,
+      "run_id": 44071325358,
+      "attempt": 1,
+      "name": "review-fixes",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325358/job/133998001164"
+    },
+    {
+      "job_id": 133998001238,
+      "run_id": 44071325358,
+      "attempt": 1,
+      "name": "landscape-1590",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325358/job/133998001238"
+    },
+    {
+      "job_id": 133998001406,
+      "run_id": 44071325358,
+      "attempt": 1,
+      "name": "fixed-sections",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325358/job/133998001406"
+    },
+    {
+      "job_id": 133998000319,
+      "run_id": 44071325440,
+      "attempt": 1,
+      "name": "phase3b-browser",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325440/job/133998000319"
+    },
+    {
+      "job_id": 133998000814,
+      "run_id": 44071325440,
+      "attempt": 1,
+      "name": "independent-ad-separation",
+      "conclusion": "success",
+      "url": "https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44071325440/job/133998000814"
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": 14323560394,
+      "run_id": 44071333927,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "stage3b4-custody-16573d8f532da1c31de73b3cf8c8b9da02ea039a",
+      "bytes": 96130,
+      "sha256": "4cf362f616c374707e38a7aebd5988d45f560fc4543fc67b8a3650563941a91b",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14323560394",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14323640520,
+      "run_id": 44071333904,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "stage3b3-evidence-16573d8f532da1c31de73b3cf8c8b9da02ea039a",
+      "bytes": 101925,
+      "sha256": "3d3c0946a76346bc2a41427001e6b5d670dee25e4a0cbbf27291e14bebf766f1",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14323640520",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14322842272,
+      "run_id": 44071333901,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "stage3b-overview-16573d8f532da1c31de73b3cf8c8b9da02ea039a",
+      "bytes": 86492782,
+      "sha256": "970fe1ed935d8c7f2f9ed9a0901de0086eee966d69d01b2a25b74180bcb23bf2",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14322842272",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14323513718,
+      "run_id": 44071334185,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "phase3i-16e26b3381763269dfc9d2360670b57726db996d",
+      "bytes": 4889247,
+      "sha256": "fa33afb821e1dd1ae098f1f4d20940e2c5d3fa6a5f810e12c566f84ba95dc035",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14323513718",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14324082136,
+      "run_id": 44071334293,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "phase3e-16e26b3381763269dfc9d2360670b57726db996d",
+      "bytes": 3274888,
+      "sha256": "084781d273e0c2f7a292adb2a3892bbe4aca868fc7cabcc4956dcf8029c31792",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14324082136",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14323082686,
+      "run_id": 44071333960,
+      "job_id": 133998029361,
+      "job_basis": "unique engine-name job within same run",
+      "engine": "WebKit",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "stage3b5-webkit-16573d8f532da1c31de73b3cf8c8b9da02ea039a",
+      "bytes": 57870491,
+      "sha256": "9949d5f153d469d9ff76448d73a76653bb8e00fbfb36eaa16791c4aa1642b554",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14323082686",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14323047790,
+      "run_id": 44071333960,
+      "job_id": 133998029699,
+      "job_basis": "unique engine-name job within same run",
+      "engine": "Chromium",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "stage3b5-chromium-16573d8f532da1c31de73b3cf8c8b9da02ea039a",
+      "bytes": 54471692,
+      "sha256": "2b9f71b4770cd9b97f487999117c74d751481a9dd93c54b9685f4ef9f9515bd0",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14323047790",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14323631324,
+      "run_id": 44071333947,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "phase3d-current-head",
+      "bytes": 1659334,
+      "sha256": "735405fa29197622a1a3972b5bd00950d2772911430f503dd53226a55ff7bd16",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14323631324",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14322304912,
+      "run_id": 44071334035,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "stage3b2-evidence-16573d8f532da1c31de73b3cf8c8b9da02ea039a",
+      "bytes": 10078,
+      "sha256": "93eb09594aef23899c8162c3b8bf4f0b568604406ec7943b45273e700b58e380",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14322304912",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14323621969,
+      "run_id": 44071333914,
+      "job_id": 133998029259,
+      "job_basis": "unique engine-name job within same run",
+      "engine": "WebKit",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "stage3b6a-webkit-16573d8f532da1c31de73b3cf8c8b9da02ea039a",
+      "bytes": 371659139,
+      "sha256": "656ea0d1a80efc1458b474c2c92b192e70ecb3e798c2db90f9dce867fdb7da36",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14323621969",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14322887811,
+      "run_id": 44071333914,
+      "job_id": 133998028649,
+      "job_basis": "unique engine-name job within same run",
+      "engine": "Chromium",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "stage3b6a-chromium-16573d8f532da1c31de73b3cf8c8b9da02ea039a",
+      "bytes": 353763089,
+      "sha256": "85e76ae0e8abee919528430d79e7da5c34189c79191e64a4564df082b4097e47",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14322887811",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14324002735,
+      "run_id": 44071333911,
+      "job_id": 133998028535,
+      "job_basis": "unique engine-name job within same run",
+      "engine": "Chromium",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "stage3b-limited-chromium-16573d8f532da1c31de73b3cf8c8b9da02ea039a",
+      "bytes": 174036603,
+      "sha256": "8f0b71283dbfef01878fc0f1cf5fe86aba53040af6a87c21daf3c4906c971f71",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14324002735",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14322764488,
+      "run_id": 44071333911,
+      "job_id": 133998029263,
+      "job_basis": "unique engine-name job within same run",
+      "engine": "WebKit",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "stage3b-limited-webkit-16573d8f532da1c31de73b3cf8c8b9da02ea039a",
+      "bytes": 178154458,
+      "sha256": "3ea847390bf5b3c0c30b3443d5f6cd657b8dcb6356eb7355715ed57857544591",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14322764488",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14324491115,
+      "run_id": 44071334135,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "phase3b-browser-evidence",
+      "bytes": 81558385,
+      "sha256": "f3023fddbe625c082fed27d50888ead4ecf7f110f6e92b89b2310045e1bdefa8",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14324491115",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14323054015,
+      "run_id": 44071334135,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "independent-ad-separation",
+      "bytes": 11753576,
+      "sha256": "df39dc9b3ecc467499210508f99b1904d53222b270d2edd8eb9c86c2774216ce",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14323054015",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14325455123,
+      "run_id": 44071333974,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "stage3a-integration-16e26b3381763269dfc9d2360670b57726db996d",
+      "bytes": 9944205,
+      "sha256": "b87cbad45492ad4b11d3465ec2d74812d39eeecbae70a79ada67d74b54ccb536",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14325455123",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14322892883,
+      "run_id": 44071333974,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "stage3a-performance-16e26b3381763269dfc9d2360670b57726db996d",
+      "bytes": 3154,
+      "sha256": "137b6fd8d7ee8cb954cd29b2487cff5395c360a5b166443abec3d8089aa3e6e3",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14322892883",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14324406169,
+      "run_id": 44071334019,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "landscape-1590-evidence",
+      "bytes": 24058936,
+      "sha256": "10122d3fc9f5d0b1b3e15d41b32ce38a646125e7935330fb0536d4ceb0acd1c6",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14324406169",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14324030224,
+      "run_id": 44071334019,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "fixed-view-controls-evidence",
+      "bytes": 2105803,
+      "sha256": "3e2f8623dde10a5e5c488ab0e66f9aa1e4e427e0711b3b12bc7abf43f8b3acfb",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14324030224",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14323716308,
+      "run_id": 44071334019,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "review-fixes-evidence",
+      "bytes": 3256270,
+      "sha256": "8f2a2434dfd6748549603ff94a9ed23a2926d657720119d7cd83e45a49594e7d",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14323716308",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14322968636,
+      "run_id": 44071334019,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "browser-evidence",
+      "bytes": 35564246,
+      "sha256": "940bf150a0c8036cb5440541dc97f892c5b3d18c07c37762d3974ae954369a33",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14322968636",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14322469979,
+      "run_id": 44071334019,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "fixed-sections-evidence",
+      "bytes": 101621213,
+      "sha256": "613bffebb2659f3b47e141418b90ea1444a14db05b6073e32aae999cd5c8b175",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14322469979",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14322174430,
+      "run_id": 44071334019,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "initial-camera-evidence",
+      "bytes": 1484157,
+      "sha256": "924ea5ca2c079dd6517489219a2f587f40a41fd1bb2ab11c71eb3caff79c51c7",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14322174430",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14325560441,
+      "run_id": 44071333912,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "phase3c-browser",
+      "bytes": 8170638,
+      "sha256": "bd91595c6520051ad009f8b803a17c25fac40d08a11354688310d4ecc6f0a9e6",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14325560441",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14324302474,
+      "run_id": 44071333912,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "phase3c-appearance-performance",
+      "bytes": 14642170,
+      "sha256": "19fee54303c9c858d21ed1407c44ed8e19c66a9a972b5dc4b913cdbe325bf034",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14324302474",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14323713527,
+      "run_id": 44071333912,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "phase3c-independent-visual",
+      "bytes": 4816237,
+      "sha256": "cb91d47a665cae7ab75e15b130dca66329f127a2cd8ebfcad67635deaa4ab7b2",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14323713527",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14322544383,
+      "run_id": 44071333912,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "pull_request",
+      "name": "phase3c-render-diagnosis",
+      "bytes": 7385,
+      "sha256": "e38a00890c3ec62840768276d02fbbc93b9d01b869bc08cb769e46163cccc80a",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14322544383",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14322647238,
+      "run_id": 44071325402,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "push",
+      "name": "stage3b-overview-16e26b3381763269dfc9d2360670b57726db996d",
+      "bytes": 86985707,
+      "sha256": "5cda29efebd7a299be94ae0707c2e3038320102de9c010195b2b9bcd3b23528c",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14322647238",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14323502043,
+      "run_id": 44071325311,
+      "job_id": 133998000362,
+      "job_basis": "unique engine-name job within same run",
+      "engine": "Chromium",
+      "attempt": 1,
+      "event": "push",
+      "name": "stage3b6a-chromium-16e26b3381763269dfc9d2360670b57726db996d",
+      "bytes": 356342202,
+      "sha256": "742d83ad2a4f2d945cb8ee61650be38e1b978f4f1925335a37314364542c20f1",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14323502043",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14321924744,
+      "run_id": 44071325311,
+      "job_id": 133998000707,
+      "job_basis": "unique engine-name job within same run",
+      "engine": "WebKit",
+      "attempt": 1,
+      "event": "push",
+      "name": "stage3b6a-webkit-16e26b3381763269dfc9d2360670b57726db996d",
+      "bytes": 744571,
+      "sha256": "fcfad6fbdf5bf5da1b4fd5bc5938ea1a982a21a3fbc03e0caca0966a72a22cc3",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14321924744",
+      "fresh_acquisition": true,
+      "new_integrity": "PASS"
+    },
+    {
+      "artifact_id": 14324135048,
+      "run_id": 44071325358,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "push",
+      "name": "browser-evidence",
+      "bytes": 35570725,
+      "sha256": "1a32447da119d77a9fcdf9a6c736340e4a3ea30c6b6cdf033280145efd7404e0",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14324135048",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14323401685,
+      "run_id": 44071325358,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "push",
+      "name": "review-fixes-evidence",
+      "bytes": 3250600,
+      "sha256": "a6f959da7f68b02222f97012ee1582f58a7be7b5835e39192fde21ff4cd71b7a",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14323401685",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14323177305,
+      "run_id": 44071325358,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "push",
+      "name": "fixed-view-controls-evidence",
+      "bytes": 2105786,
+      "sha256": "47715b7ab5cb296a4a56b8d0d3e748906105989057b0d479f8cd74a99799a14e",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14323177305",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14322822745,
+      "run_id": 44071325358,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "push",
+      "name": "landscape-1590-evidence",
+      "bytes": 24058918,
+      "sha256": "02c89284c2e81cf3c6ab9fe8327846cbb648cb666f09da64bc9d4854e6bb7663",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14322822745",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14322637647,
+      "run_id": 44071325358,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "push",
+      "name": "initial-camera-evidence",
+      "bytes": 1481313,
+      "sha256": "9080a2d750eb248c0764f71e4d62cf4ad8eb02beae6c418e979261e74b3925e7",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14322637647",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14322243252,
+      "run_id": 44071325358,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "push",
+      "name": "fixed-sections-evidence",
+      "bytes": 101620109,
+      "sha256": "9be102a6bc5cada6185e5ae837611f555294be0f15c872e8fffe198efa45cebf",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14322243252",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14324575848,
+      "run_id": 44071325440,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "push",
+      "name": "phase3b-browser-evidence",
+      "bytes": 81558432,
+      "sha256": "e65e19591c57c01f5c20bcc7a804e886e6227ba4628a33eb79d0f8f37f75fc21",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14324575848",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    },
+    {
+      "artifact_id": 14323462904,
+      "run_id": 44071325440,
+      "job_id": null,
+      "job_basis": "UNKNOWN: no unique engine job mapping established",
+      "engine": "UNKNOWN",
+      "attempt": 1,
+      "event": "push",
+      "name": "independent-ad-separation",
+      "bytes": 11753577,
+      "sha256": "20e03ab95edc93842204ab521a29f5aea83991fbb02aa40e434d9a44e9246057",
+      "url": "https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14323462904",
+      "fresh_acquisition": false,
+      "new_integrity": "NOT_TESTED"
+    }
+  ],
+  "gates": [
+    {
+      "id": "G1",
+      "status": "UNKNOWN",
+      "reason": "45s/180s configured incl launch and cleanup reservation; outer supervisor exists. Formal normal control timed out in 6s Python communication; active phase and actual deadline enforcement unknown.",
+      "refs": [
+        "failure-original",
+        "local-review"
+      ]
+    },
+    {
+      "id": "G2",
+      "status": "UNKNOWN",
+      "reason": "Local Linux PID/birth descendant and residual controls pass historically; formal runtime ledger absent. No host suspension/uninterruptible-kernel guarantee.",
+      "refs": [
+        "failure-original",
+        "local-review"
+      ]
+    },
+    {
+      "id": "G3",
+      "status": "PASS",
+      "reason": "Historical six local controls passed; old synthetic RED/new local PASS is not formal/browser RED/GREEN.",
+      "refs": [
+        "local-review"
+      ],
+      "scope": "historical local six controls"
+    },
+    {
+      "id": "G4",
+      "status": "FAIL",
+      "reason": "push WebKit normal control TimeoutExpired before assertion and subsequent five conditions. Formal19 runs17success2failure preserved.",
+      "refs": [
+        "failure-original",
+        "api"
+      ]
+    },
+    {
+      "id": "G5",
+      "status": "BLOCKED",
+      "reason": "Formal safety PASS and independent review required before browser; previous local executable absence and four-slot accounting preserved. No new browser run.",
+      "refs": [
+        "closeout",
+        "local-review"
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "formal-normal",
+      "status": "FAIL",
+      "reason": "P2: normal subprocess communication timeout6s; normal assertions incomplete; no proven leak or slow-runner cause.",
+      "refs": [
+        "failure-original"
+      ],
+      "severity": "P2"
+    },
+    {
+      "id": "missing-runtime",
+      "status": "UNKNOWN",
+      "reason": "P2: per-case stdout/stderr/config/phase/PID-birth/results/residual missing from archive; workflow captures EVIDENCE_DIR, harness writes elsewhere.",
+      "refs": [
+        "failure-original",
+        "retained-scan"
+      ],
+      "severity": "P2"
+    },
+    {
+      "id": "byte-attribution",
+      "status": "UNKNOWN",
+      "reason": "P2: production-used bytes and 96/0 cause unproven.",
+      "refs": [
+        "b6f",
+        "closeout"
+      ],
+      "severity": "P2"
+    },
+    {
+      "id": "terminal-events",
+      "status": "NOT_RECORDED",
+      "reason": "P3: terminalNotifications not enabled in formal path; absence of recordings is not absence of notifications.",
+      "refs": [
+        "closeout"
+      ],
+      "severity": "P3"
+    },
+    {
+      "id": "legacy-p3",
+      "status": "UNKNOWN",
+      "reason": "Existing Stage1 P3-01 retains its prior unresolved status; this intake does not close it.",
+      "refs": [
+        "b6f"
+      ],
+      "severity": "P3"
+    }
+  ],
+  "next_gates": [
+    {
+      "id": "outer-review",
+      "status": "BLOCKED",
+      "reason": "Separate approval: independently review finite outer timeout, exception checkpoint/PID-birth and actual per-case artifact inclusion; no simple timeout extension.",
+      "refs": [
+        "failure-original",
+        "retained-scan"
+      ]
+    },
+    {
+      "id": "formal-safe",
+      "status": "BLOCKED",
+      "reason": "New authorized non-browser formal safety evidence and independent review must PASS without erasing prior FAIL.",
+      "refs": [
+        "failure-original"
+      ]
+    },
+    {
+      "id": "browser-start",
+      "status": "BLOCKED",
+      "reason": "Only after formal-safe and executable/runtime/capacity preflight; no install or browser execution in this stage.",
+      "refs": [
+        "local-review",
+        "failure-original"
+      ]
+    }
+  ],
+  "formal": {
+    "normal": "FAIL",
+    "remaining_five": "NOT_TESTED",
+    "phase": "UNKNOWN",
+    "residual": "UNKNOWN",
+    "cause": "UNKNOWN",
+    "safety": "FAIL",
+    "browser": "FAIL"
+  },
+  "local_slots": {
+    "planned": 4,
+    "workers": 1,
+    "browser_attempts": 0,
+    "BLOCKED": 1,
+    "NOT_TESTED": 3
+  },
+  "acceptance": {
+    "contract304": "NOT_ADOPTED",
+    "stage3b": "HOLD",
+    "source_merge": "NO",
+    "production_bytes": "UNKNOWN",
+    "terminal_notifications": "NOT_RECORDED"
+  }
+}

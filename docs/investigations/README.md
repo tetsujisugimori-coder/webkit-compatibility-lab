@@ -20,3 +20,7 @@ Style/focus/scrollIntoView removal in Atlas only excludes each tested expression
 HTTP 304 has no response content. That fact alone neither proves browser failure nor proves successful resource use. Request If-None-Match and response ETag are different fields. Vary must be evaluated against the request and selected representation; ETag/HAR agreement alone does not prove the browser-used bytes.
 
 No shared-cause classification has been assigned. Proposed experiments are NOT_TESTED and require a separately scoped plan.
+
+## Stage 2-B supplement
+
+[B6g existing-evidence intake](stage2b/README.md): formal safety/browser FAIL preserved; no new browser or source tests.
