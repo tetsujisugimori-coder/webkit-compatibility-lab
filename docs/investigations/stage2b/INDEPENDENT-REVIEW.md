@@ -1,5 +1,8 @@
 # Stage 2-B independent review
 
+> **2026-11-18 P2-R3 follow-up (latest status):** New ledger-aggregate false-PASS finding **P2-R3 OPEN / patch submitted / independent re-review PENDING**. The original limited-merge recommendation below is a historical verdict for HEAD `5846374a...`, **not a current merge authorization**. `test_verify.py` includes new regression cases, but the old five-test log predates this patch; post-patch Python execution is **NOT_TESTED**. **P2-R1/P2-R2 remain CLOSED.** Source formal safety/browser FAIL, Stage 3-B HOLD, source merge NO remain unchanged. [New review](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/4#pullrequestreview-5955991611).
+
+
 2026-11-17. Reviewer is a separate AI worker in the same dot, not an external human auditor. This review covers the Stage2-B ledger, offline verifier/tests, recovery inventory and Markdown report/index additions. It does not authorize source-project changes or browser execution.
 
 ## Verdict
@@ -38,3 +41,7 @@ The first correction still accepted (a) WebKit artifact14321924744 mapped to sam
 ## Limits and remaining gates
 
 This verifier checks the fixed receipt ledger; it is not a general proof engine or cryptographic attestation. Narrative meanings and API truth still require source review. New bundle save/re-download and submitted-head readback are later separate records. Existing source safety/evidence/byte-attribution P2 and notification/legacy P3 stay unresolved as documented. No newly executed counterexample establishes a source runtime failure beyond the retained formal logs.
+
+## Subsequent P2-R3 review supplement (2026-11-18)
+
+The earlier P2-R1/P2-R2 reviews and their CLOSED classifications are historical and unchanged. A later GitHub review ([#5955991611](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/4#pullrequestreview-5955991611)) identified a **new** P2-R3: incorrect PASS acceptance for missing jobs or a coordinated `pull_request`/`push` event reclassification. The code and fault-test additions are submitted as a follow-up, but this is **not** an independent re-review PASS. Status: **P2-R3 OPEN, independent re-review PENDING, lab limited merge HOLD**. Do not treat the original reviewer's verifier hash or five-method test log as covering this later change.
