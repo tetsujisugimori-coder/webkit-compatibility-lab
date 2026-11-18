@@ -42,7 +42,10 @@ def verify(d):
         require(rows and all(type(x[key]) is int and x[key]>0 for x in rows),'id format')
         require(len(rows)==len({x[key] for x in rows}),'duplicate id')
     rr={r['run_id']:r for r in runs};jj={j['job_id']:j for j in jobs}
-    require(len(runs)==19 and sum(r['conclusion']=='success' for r in runs)==17 and sum(r['conclusion']=='failure' for r in runs)==2,'formal history')
+    require(len(runs)==19 and len(jobs)==42 and sum(r['conclusion']=='success' for r in runs)==17 and sum(r['conclusion']=='failure' for r in runs)==2,'formal history counts')
+    required_event_counts={('pull_request','success'):14,('pull_request','failure'):1,('push','success'):3,('push','failure'):1}
+    actual_event_counts={(event,conclusion):sum(r['event']==event and r['conclusion']==conclusion for r in runs) for event,conclusion in required_event_counts}
+    require(actual_event_counts==required_event_counts,'run event/conclusion totals')
     require({r['run_id'] for r in runs if r['conclusion']=='failure'}=={44071325311,44071333914},'failure identity swap')
     for r in runs:require(r['attempt']==1 and r['head']==d['source_head'] and r['event'] in ['push','pull_request'],'run scope')
     for j in jobs:require(j['run_id'] in rr and j['attempt']==rr[j['run_id']]['attempt'],'job linkage')
