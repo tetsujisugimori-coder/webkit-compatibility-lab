@@ -1,0 +1,1 @@
+PASS: offline record consistency only; formal safety remains FAIL

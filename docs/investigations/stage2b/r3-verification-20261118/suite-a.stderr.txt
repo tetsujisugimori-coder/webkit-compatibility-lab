@@ -1,0 +1,11 @@
+test_archive (test_verify.LedgerTests.test_archive) ... ok
+test_archive_adversarial (test_verify.LedgerTests.test_archive_adversarial) ... ok
+test_faults (test_verify.LedgerTests.test_faults) ... ok
+test_identity_swaps (test_verify.LedgerTests.test_identity_swaps) ... ok
+test_p2_r3_aggregate_invariants (test_verify.LedgerTests.test_p2_r3_aggregate_invariants) ... ok
+test_valid (test_verify.LedgerTests.test_valid) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.023s
+
+OK

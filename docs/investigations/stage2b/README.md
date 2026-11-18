@@ -61,3 +61,16 @@ Independent follow-up review identified a **new** verifier gap; this is **P2-R3*
 - **Verification status:** the structural checks are reviewed against the fixed receipt data, but the new Python tests have **NOT_TESTED** execution status in this follow-up. Existing `test-results.txt` remains the historical five-method log, not evidence that the new cases ran. A separately executed test run and independent re-review are required to mark **P2-R3 CLOSED** and restore a limited-merge YES.
 
 This patch does not change source artifacts, their audit scope, any formal safety/browser outcomes, or browser-start permissions. Overall **PARTIAL**; lab PR #4 remains **Draft / merge HOLD** pending P2-R3 closure.
+
+
+## P2-R3 executed re-review supplement (2026-11-18 UTC)
+
+This append supersedes the R3 NOT_TESTED/HOLD execution state above, while retaining its historical record. Tested code/ledger HEAD: `118061e840471715253be7b413a78995a4c5be55`, tree `25fe8cc04384d85cfe4b71fbc72b0d2417eb99bc`. No verifier, unit-test, ledger or historical log bytes changed in this supplement.
+
+A and separate AI reviewer B independently executed all **6 unittest methods: PASS6, FAIL0, ERROR0, SKIP0, exit0**, plus the normal ledger CLI (exit0). Python3.12.14/Linux; bounded subprocesses30s(A)/20s(B), zero retries. The normal19/42/38 ledger and PR14success1failure/push3success1failure distribution were accepted. The exact job133998029071 deletion (41jobs) and run44071333927/artifact event swap (PR14/push5) were rejected with `formal history counts` and `run event/conclusion totals`. Successful negative tests mean rejection, not valid fault data. Existing25 ledger mutations +2 identity swaps and ZIP1normal/8fault checks passed. P2-R1/R2 remain CLOSED.
+
+New original execution receipts, timestamps, hashes, stdout/stderr and B review are in [r3-verification-20261118](r3-verification-20261118/). Old `test-results.txt` remains unchanged. B directly acquired the GitHub fixed code into a separate directory. Shared platform/account/filesystem/history limit independence; this is not third-party human audit. No new P1/P2/P3 was found within R3 scope.
+
+**P2-R3 CLOSED; Stage2-B document/ledger/verifier limited acceptance YES and limited merge recommendation YES**, conditional on final submission readback reported in the PR review. Overall PARTIAL: this does not establish authentic/safe source execution. Formal safetyFAIL, browserFAIL, Stage3-B HOLD, source mergeNO, root-causeUNKNOWN and production-used-bytesUNKNOWN remain. No browser or Yamanaka workflow was run. Start HEAD Actions/checks/status counts0: formal CI NOT_TESTED; final observation is reported in PR review.
+
+New evidence custody is separately recorded in the final PR review; execution PASS does not establish storage ACL or long-term retention. Draft remains; no merge.
