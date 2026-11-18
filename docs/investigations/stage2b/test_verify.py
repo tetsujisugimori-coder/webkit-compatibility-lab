@@ -15,6 +15,25 @@ class LedgerTests(unittest.TestCase):
   with self.assertRaises(ValueError):verify(d)
   d=copy.deepcopy(D);next(r for r in d['runs'] if r['conclusion']=='success')['conclusion']='failure';next(r for r in d['runs'] if r['run_id']==44071325311)['conclusion']='success'
   with self.assertRaises(ValueError):verify(d)
+ def test_p2_r3_aggregate_invariants(self):
+  # The original 42-job receipt must remain complete even when a job is unreferenced by artifacts.
+  self.assertIn('formal safety remains FAIL',verify(D))
+  d=copy.deepcopy(D)
+  linked={a['job_id'] for a in d['artifacts'] if a['job_id'] is not None}
+  orphan=next(j['job_id'] for j in d['jobs'] if j['job_id'] not in linked)
+  d['jobs']=[j for j in d['jobs'] if j['job_id']!=orphan]
+  self.assertEqual(len(d['jobs']),41)
+  with self.assertRaisesRegex(ValueError,'formal history counts'):verify(d)
+  # Coordinated run/artifact reclassification must not alter the 15 PR / 4 push receipt.
+  d=copy.deepcopy(D)
+  run=next(r for r in d['runs'] if r['run_id']==44071333927)
+  self.assertEqual((run['event'],run['conclusion']),('pull_request','success'))
+  run['event']='push'
+  for a in d['artifacts']:
+   if a['run_id']==run['run_id']:a['event']='push'
+  self.assertEqual(sum(r['event']=='pull_request' for r in d['runs']),14)
+  self.assertEqual(sum(r['event']=='push' for r in d['runs']),5)
+  with self.assertRaisesRegex(ValueError,'run event/conclusion totals'):verify(d)
  def test_archive(self):
   with tempfile.TemporaryDirectory(dir=Path(__file__).parent) as td:
    p=Path(td)/'a.zip';data=b'proof';m=[dict(path='proof.txt',bytes=5,sha256=hashlib.sha256(data).hexdigest())]
