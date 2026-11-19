@@ -1,6 +1,13 @@
 # Stage 3-A: 山中城B6h〜B6j既存成果の固定版受領
 
-> **現行判定（2026-11-19 JST）：資料・公開メタデータの受領作業を実施。技術受入はPARTIAL、元作品の正式有限processゲートFAIL、ブラウザ受入FAIL、Stage 3-B HOLD、304代替NOT_ADOPTED、source merge NO。** 横断ラボPR #4は2026-11-19 00:40:48 JSTにマージ済みで、文書/オフライン台帳の限定受入と元作品の受入は無関係。Stage 3-Aの新しい独立文書レビュー、原ZIP再取得監査、実行テスト、CIはいずれもNOT_TESTED。
+> **現行判定（2026-11-19 JST）：Stage 3-A初回独立レビュー完了、総合PARTIAL、限定マージHOLD。** [旧HEAD `01425b14` のレビュー](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/6#pullrequestreview-5969833232)で指摘されたP2（B6j正式失敗4件のrun/job/artifact追跡）・P3（B6iの42job内訳）を同じDraft PRに文書補記した。**修正後HEADの別担当による独立再審査はPENDING**。元作品の正式有限processゲートFAIL、ブラウザ受入FAIL、Stage 3-B HOLD、304代替NOT_ADOPTED、source merge NO、使用実byte/根因UNKNOWNは維持。横断ラボPR #4は2026-11-19 00:40:48 JSTにマージ済みで、文書の限定判定を元作品に転用しない。原ZIP新規再取得/実行テスト/ラボ正式CIはNOT_TESTED。
+
+## 初回独立レビュー後の追補（P2/P3）
+
+- **P2（初回レビュー時OPEN、文書補記済・再審査待ち）**：B6jの旧RED正式失敗4件にrun・job・artifactの公開リンクを付けた。ID対応/job failure/artifact存在をD（GitHub公開メタデータ直接確認）とし、旧RED経過時間/Z1/auditFAIL・新GREEN未到達・最終assertions欠落は元作品の独立再審査から引用したRと明示。原ZIP内容の新監査を主張しない。詳細は[台帳の対応表](evidence-ledger.md#b6j旧red4件の正式失敗と公開証拠対応追補-dr2026-11-19)。
+- **P3（文書補記済・再審査待ち）**：固定B6i HEADの**19 run・42 jobをGitHubから直接再集計（D）**して、36成功/5失敗/1skip/0取消を記録。提出当時の「未再集計U」は[台帳](evidence-ledger.md)に歴史記録として残す。
+- **初回提出時の歴史的判定**：独立文書レビューNOT_TESTED / 限定マージ判断PENDING。これは旧HEAD `01425b14` の提出時点の記録であり、上記の初回レビュー完了・修正提出後の現行判定ではない。
+- **次の受入ゲート**：新HEADの固定・全7 Markdown再読戻し・リンクと差分保持の照合・今回のP2/P3を含む独立再審査。本人による編集後確認だけでは独立再審査PASSとしない。限定マージHOLD、Draft、未マージを維持する。
 
 ## 目的・版と工程の境界
 - 管理[Issue #5](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/issues/5)。作業基準lab main `47e5ae1c3e1baae51c0283ed55c93741702e5174`（[PR #4](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/4)のmerge commit）。PR #4の提出HEADは`6050ebcb8f955cf2dc7ca2f6041d693c8e883918`であり、merge commitとは別。
@@ -22,7 +29,7 @@ B6hの作業は旧B6gで原票収録が失敗した後の収録器・監督処�
 [中央保全規約v0.2.0](https://github.com/tetsujisugimori-coder/git-preservation-gate/blob/4695c3ce2d61e66df0dd36a4312373459e1557d4/docs/v0.2.0/policy.md)では公開文書はLevel 1、重要な実験原ZIPはLevel 2となる。元作品の保存・独立再取得PASSという**報告**は、今回のラボが再取得したことを意味しない。本Stage 3-Aでは原ZIP・生ログの取得/展開/保存0件、ブラウザ・Python・Node・CI起動0件。今回の台帳の「収録記録を読んだ」ことと「内容を検査した」ことを明確に分ける。実原物の完全性、製品受入、独立性の判断を統合しない。
 
 ## 残件と次工程の開始条件
-1. Stage 3-A文書の固定版読戻し・相対リンク・数値整合・独立レビューを別工程で確認する。正式CIが存在しない/未実施ならCI PASSと書かない。
+1. P2/P3追補後の新HEADを固定し、提出全7文書の読戻し、相対リンク、数値・旧判定の保持を別担当が独立再審査する。初回独立レビューは完了したが修正後の独立再審査は未完了。正式CIが未実施ならCI PASSと書かない。
 2. B6kは別版として後続に存在。新CI、未解決P2、保存後再取得・独立審査は**B6k側で個別判定**し、本受領台帳のB6j結果を遡って変更しない。
 3. 元作品のHOLD/FAILを解除せず、新ブラウザ因果実験、共有harness実装、304受入述語緩和、手動workflow retry/dispatch、元作品のPR操作は別の範囲審査まで実施しない。
 
