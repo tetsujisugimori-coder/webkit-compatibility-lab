@@ -1,5 +1,9 @@
 # Stage 2-B: B6g existing-evidence intake (2026-11-17)
 
+> **Current lab PR status (2026-11-19 JST): [PR #4](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/4) MERGED/CLOSED on 2026-11-18 15:40:48 UTC (2026-11-19 00:40:48 JST); merge commit `47e5ae1c3e1baae51c0283ed55c93741702e5174`.** Stage 2-B documentation/ledger/offline-verifier limited acceptance YES; P2-R1/R2/R3 CLOSED; overall investigation PARTIAL; lab formal CI NOT_TESTED. Source project formal safety/browser FAIL, Stage 3-B HOLD, source merge NO, 304 alternative NOT_ADOPTED, production-used bytes/root cause UNKNOWN **unchanged**. B6g was the source version examined here; see [Stage 3-A intake](../stage3a/README.md) for distinct B6h/B6i/B6j versions. The following dated Draft/PENDING/OPEN snapshot is **historical**, not the lab PR's present state.
+
+### Historical pre-merge banner (2026-11-18, preserved verbatim below)
+
 > **Current status (2026-11-18): Overall PARTIAL; P2-R3 CLOSED; executed independent re-review PASS; Stage 2-B documents/ledger/offline verifier limited acceptance YES; lab-only limited merge recommendation YES.** The earlier P2-R3 OPEN / independent re-review PENDING / merge HOLD and five-method test evidence below are **historical pre-re-review states, not the current verdict**. See the [P2-R3 executed re-review supplement](#p2-r3-executed-re-review-supplement-2026-11-18-utc) and [posted final review](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/4#pullrequestreview-5956307340) for the six-test results, submitted-version readback, and custody limits. **P2-R1/R2 remain CLOSED.** Formal CI NOT_TESTED; Yamanaka formal safety/browser FAIL, Stage 3-B HOLD, source merge NO, root cause and production-used bytes UNKNOWN remain unchanged. This PR remains Draft and unmerged.
 
 

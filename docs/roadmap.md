@@ -1,3 +1,11 @@
+## Current Stage 3-A supplement — 2026-11-19 JST
+
+[Lab PR #4](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/4) was **merged** at 2026-11-18 15:40:48 UTC (2026-11-19 00:40:48 JST), merge commit `47e5ae1c3e1baae51c0283ed55c93741702e5174`. The earlier Stage 2-B Draft/P2-R3 PENDING lines below are **historical**; P2-R1/R2/R3 are CLOSED for the offline ledger-verifier scope. This does not clear Yamanaka source safety/browser FAIL or Stage 3-B HOLD.
+
+[Stage 3-A intake](investigations/stage3a/README.md) and [fixed evidence ledger](investigations/stage3a/evidence-ledger.md) receive **B6h `8168c355` / B6i `8b0abbd7` / B6j `f6be90f4`** as distinct source versions. Yamanaka PR #55 progressed to B6k afterwards; B6k is out of this fixed-version intake. Stage 3-A issue [#5](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/issues/5), branch `docs/stage3a-b6h-b6j-intake-20261119`. No source project change, raw artifact re-download, workflow dispatch, browser test, or merge is authorized by the intake. Keep the earlier roadmap text for its dated historical assertions.
+
+---
+
 ## Stage 2-A current supplement — 2026-11-17
 
 Stage 1 PR #2 is merged at `66d56436591b8f935a2f3515c4618d513a8473ff`. Earlier current/pending statements below are historical snapshots, not current execution permission. [Stage 2-A B6f evidence intake](investigations/stage2a-b6f-evidence-intake.md) separates direct source reads, cited observations and unacquired originals. B6g is a separate version; no new experiments or source-project changes. FAIL/UNKNOWN/HOLD remain.
