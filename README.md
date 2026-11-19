@@ -1,5 +1,12 @@
 # Cross-project WebKit investigation baseline
 
+## 現行状態（2026-11-19 JST）
+
+- **[PR #4](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/4)はmerged=true / closed**。merge commit `47e5ae1c3e1baae51c0283ed55c93741702e5174`、merge日時2026-11-19 00:40:48 JST（前日の15:40:48 UTC）。P2-R1/R2/R3はオフライン台帳検査の範囲でCLOSED、文書・台帳限定の受入であり、元作品の技術PASSではない。
+- 次工程：[Issue #5](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/issues/5) / [Stage 3-A B6h〜B6j固定版受領](docs/investigations/stage3a/README.md) と[証拠台帳](docs/investigations/stage3a/evidence-ledger.md)。受領は公開GitHubメタデータ・報告の版別整理のみで、原ZIPの新規取得、ブラウザ実験、新CIは実施していない。
+- 元[山中城PR #55](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55)はDraft・未マージ、B6kまで後続更新あり。B6h/B6i/B6jの歴史的正式安全FAIL、ブラウザFAIL、Stage 3-B HOLD、304代替NOT_ADOPTED、production使用byteと根因UNKNOWNを維持。後続B6kと旧B6g結果を混算しない。
+- 以下のStage 0/1/2-A/2-Bに書かれた過去の「Draft」「未マージ」「current」「PENDING」は当時の状態として保持し、**現在のPR #4マージ判定の根拠として扱わない**。
+
 Stage 0 is a documentation baseline, not a root-cause fix or browser acceptance certificate.
 
 ## Repository identity and submission state
