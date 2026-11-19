@@ -1,8 +1,8 @@
 # Stage 3-A 固定版成果受領・証拠台帳（2026-11-19 JST）
 
 ## 評価語と受領境界
-- **D（直接確認）**：この工程でGitHubのPR metadata、固定commit変更ファイル一覧、公開レビュー/コメント、代表runのjob/stepを直接取得したこと。コメント内の「原ZIP監査PASS」はその報告本文の取得であり、**原ZIPの新監査ではない**。
-- **R（報告の受領）**：元PRで実行者・独立担当が述べた局所試験、全run集計、zipの保存後再取得・CRC/manifest。ラボ担当による新たな追試・全量再取得ではない。
+- **D（直接確認）**：この工程でGitHubのPR metadata、固定commit変更ファイル一覧、公開レビュー/コメント、代表runのjob/step、追加レビュー時のB6i 19 run / 42 job集計およびB6j失敗4件のrun/job/artifact対応を直接取得したこと。コメント内の「原ZIP監査PASS」はその報告本文の取得であり、**原ZIPの新監査ではない**。
+- **R（報告の受領）**：元PRで実行者・独立担当が述べた局所試験、今回Dで全件再集計していない版のrun/job集計、zipの保存後再取得・CRC/manifest。ラボ担当による新たな追試・全量再取得ではない。
 - **U**：必要な直接観測、元ZIP再取得、正式使用byte、原因等が今回ないもの。PASSに変換しない。
 - 固定ソース： [B6h報告](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#issuecomment-6961249966)、[B6i確定報告](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#issuecomment-6974070224)、[B6j確定報告](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#issuecomment-6984053076)、[B6j別担当レビュー](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#pullrequestreview-5960380971)。
 
@@ -19,10 +19,10 @@ B6hの確認対象例：`.github/workflows/stage3b6.yml`、`scripts/stage3b6h-wa
 | 版 | run成功/失敗/取消 | job成功/失敗/skip/取消 | 専用結果と受入境界 | 根拠 |
 |---|---|---|---|---|
 | B6h | 16 / 3 / 0 | 36 / 5 / 1 / 0 | 専用4jobの単体/収録ゲートはPASS、browser FAIL。overview total壁時計1261.703ms >1250msでFAIL。正式安全全体FAIL | R：[B6h](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#issuecomment-6961249966)、D：[overview run 44171535659](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44171535659)のjobがFAIL |
-| B6i | 16 / 3 / 0 | 全42jobの結果内訳は今回未再集計 U | overview PR/pushは成功、limited PR Chromium close超過・B6a PR/push browser FAIL。正式安全全体FAIL | R：[B6i](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#issuecomment-6974070224)、D：[limited PR run 44184412610](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44184412610) Chromium FAIL/WebKit SUCCESS |
+| B6i | 16 / 3 / 0 | **36 / 5 / 1 / 0（19 run・42 jobを直接再集計 D）** | overview PR/pushは成功、limited PR Chromium close超過・B6a PR/push browser FAIL。正式安全全体FAIL | R：[B6i](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#issuecomment-6974070224)、D：[limited PR run 44184412610](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44184412610) Chromium FAIL/WebKit SUCCESS |
 | B6j | 8 / 10 / 1 | 27 / 13 / 1 / 1 | 731/731局所PASSと異なり正式FAIL。旧RED4件はZ残留/監査FAIL、GREEN未到達。新P2-CI-01 OPEN | R：[B6j確定報告](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#issuecomment-6984053076)、D：[limited PR run 44330864254](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44330864254)の両engine job FAIL |
 
-19 runや42jobは**workflow/runとjobの件数**であって独立したブラウザ条件数ではない。B6jでは各run attempt1との報告。ラボで全run APIを再列挙したものではない。B6gの17成功/2失敗をB6h/B6i/B6jへ流用しない。
+19 runや42jobは**workflow/runとjobの件数**であって独立したブラウザ条件数ではない。B6iは固定HEAD `8b0abbd7038be062aa43c8aeff40edc25b9ad203` の19 run（全attempt 1、16成功・3失敗）と全42 jobをGitHub APIで直接再集計（D）し、job **36成功・5失敗・1 SKIPPED・0 CANCELLED**を確認した。**提出当時の履歴（U）**：`全42jobの結果内訳は今回未再集計 U`（当時は正しく、後日のD追補で更新）。B6jの各run attempt1・全件集計は元報告(R)であり、本ラボによるB6jの全19 run API再列挙ではない。B6gの17成功/2失敗をB6h/B6i/B6jへ流用しない。
 
 ## B6hの代表正式run・失敗原票（R、代表jobはD）
 | event / run | jobまたはartifact | 観測と未解決 |
@@ -67,6 +67,19 @@ B6iは正式38 ZIP=2,493,250,228 bytesのinventory報告があるが、全量の
 | pull_request | [44330864573](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44330864573) | landscape C D extraction | FAIL |
 
 集計 8 SUCCESS + 10 FAIL + 1 CANCELLED = 19。push4 / PR15、job42（27 SUCCESS/13 FAIL/1 SKIPPED/1 CANCELLED）は元報告集計。代表limited run `44330864254`のChromium/WebKit job両FAILは今回APIで直接確認(D)。
+
+## B6j旧RED4件の正式失敗と公開証拠対応（追補 D/R、2026-11-19）
+
+次の**run・job・artifactのID対応、job失敗、artifactの存在は公開GitHub Actions metadataを直接確認（D）**した。**旧RED経過時間、残留Z1、auditFAIL、新GREEN未到達、最終assertions欠落は[元作品の独立再審査](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#pullrequestreview-5960380971)が原ZIPを再取得して確認した結果の引用（R）**であり、本ラボによる原ZIP展開・生ログ・assertionsの直接検証(D)ではない。原票そのもののLevel 2再監査はNOT_TESTED。
+
+| B6j正式失敗 | run (D) | job (D) | artifact (D) | 元レビューでの観測 (R) |
+|---|---|---|---|---|
+| 専用 push WebKit | [44330846919](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44330846919) | [134894501149](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44330846919/job/134894501149) | [14439820981](https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14439820981) | 旧RED 1888.072ms / Z1 / auditFAIL、新GREEN未到達、最終assertions欠落 |
+| 専用 PR Chromium | [44330863889](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44330863889) | [134894564262](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44330863889/job/134894564262) | [14439259747](https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14439259747) | 旧RED 1889.750ms / Z1 / auditFAIL、新GREEN未到達、最終assertions欠落 |
+| 専用 PR WebKit | [44330863889](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44330863889) | [134894564548](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44330863889/job/134894564548) | [14441519470](https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14441519470) | 旧RED 1864.433ms / Z1 / auditFAIL、新GREEN未到達、最終assertions欠落 |
+| overview push | [44330846948](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44330846948) | [134894501952](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/actions/runs/44330846948/job/134894501952) | [14439144820](https://api.github.com/repos/tetsujisugimori-coder/yamanaka-historical-terrain/actions/artifacts/14439144820) | 旧RED 1861.304ms / Z1 / auditFAIL、新GREEN未到達、最終assertions欠落 |
+
+対象元作品ソースは固定B6j HEAD `f6be90f4a27452375041bf7e4f7ebc35c5cd4e1b`。artifactの名前・存在は実行時の内容完全性を証明しない。元作品の正式安全・ブラウザFAIL、B6j時点のP2-CI-01 OPEN、Stage 3-B HOLDを維持する。
 
 ## B6jの特定原票、独立レビュー、保全の境界
 - 元[確定報告](https://github.com/tetsujisugimori-coder/yamanaka-historical-terrain/pull/55#issuecomment-6984053076)では正式6原票の旧REDで、専用push WebKit 1888.072ms/Z1/auditFAIL、専用PR Chromium 1889.750ms/Z1/auditFAIL、専用PR WebKit 1864.433ms/Z1/auditFAIL、overview push 1861.304ms/Z1/auditFAIL、いずれも新GREEN未到達・最終assertions欠落。他2件（専用push Chromium、overview PR）は17対照完走。**局所731/731 PASS、独立focused7/7 PASSでも正式FAILを上書きしない**。
