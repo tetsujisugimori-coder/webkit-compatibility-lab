@@ -1,5 +1,7 @@
 # Cross-project WebKit investigation baseline
 
+> AI担当者・ChatGPT Workの作業方針：[AGENTS.md](AGENTS.md)。調査は再現・判定・対処・未解明範囲が整理できた時点で区切りを検討し、対象作品の開発へつなぐ。
+
 ## 現行状態（2026-11-19 JST）
 
 - **[PR #4](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/4)はmerged=true / closed**。merge commit `47e5ae1c3e1baae51c0283ed55c93741702e5174`、merge日時2026-11-19 00:40:48 JST（前日の15:40:48 UTC）。P2-R1/R2/R3はオフライン台帳検査の範囲でCLOSED、文書・台帳限定の受入であり、元作品の技術PASSではない。
