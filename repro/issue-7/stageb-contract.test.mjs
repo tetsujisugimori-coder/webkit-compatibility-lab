@@ -40,7 +40,9 @@ test('P2: incomplete observations are not misclassified as observed failures',()
   missingAttempt:r=>r.attempts=[],
   missingResponseStatus:r=>delete r.attempts[0].responseStatus,
   missingTerminal:r=>delete r.attempts[0].terminal,
-  missingElapsed:r=>delete r.attempts[0].terminal.elapsedMs
+  missingElapsed:r=>delete r.attempts[0].terminal.elapsedMs,
+  missingRequestPath:r=>delete r.attempts[0].events[0].path,
+  missingModuleMarker:r=>delete r.attempts[0].page.marker
  })){const r=normal();mutate(r);assert.equal(verdict(r),'INCOMPLETE',name);}
  for(const [name,mutate] of Object.entries({
   wrongStatus:r=>r.server[0].status=404,
