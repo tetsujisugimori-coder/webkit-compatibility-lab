@@ -31,3 +31,21 @@ test('reject contradictory first status and mismatched event status for revalida
  r.attempts[1].events[1].status=200;r.attempts[1].events.reverse();assert.throws(()=>classify(r,payload));
  r.attempts[1].events.reverse();delete r.attempts[1].terminal;assert.throws(()=>classify(r,payload),/INCOMPLETE_ATTEMPT/);
 });
+
+test('P2: incomplete observations are not misclassified as observed failures',()=>{
+ const verdict=r=>{try{return classify(r,payload)}catch(error){return error.code==='ERR_ASSERTION'?'FAIL':'INCOMPLETE';}};
+ for(const [name,mutate] of Object.entries({
+  missingFinish:r=>delete r.server[0].finishAt,
+  missingServer:r=>r.server=[],
+  missingAttempt:r=>r.attempts=[],
+  missingResponseStatus:r=>delete r.attempts[0].responseStatus,
+  missingTerminal:r=>delete r.attempts[0].terminal,
+  missingElapsed:r=>delete r.attempts[0].terminal.elapsedMs
+ })){const r=normal();mutate(r);assert.equal(verdict(r),'INCOMPLETE',name);}
+ for(const [name,mutate] of Object.entries({
+  wrongStatus:r=>r.server[0].status=404,
+  wrongTerminal:r=>r.attempts[0].terminal.status='FAIL',
+  wrongRequest:r=>r.attempts[0].events[0].path='/unexpected'
+ })){const r=normal();mutate(r);assert.equal(verdict(r),'FAIL',name);}
+ assert.equal(verdict(normal()),'PASS');
+});
