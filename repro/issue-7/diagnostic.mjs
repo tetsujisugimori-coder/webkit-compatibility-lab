@@ -10,7 +10,13 @@ export function observeRequest(page, select, { deadlineMs = 5_000 } = {}) {
   function settle(status, via, reason = null) {
     if (result) return;
     const ms = performance.now();
-    result = Object.freeze({ status, via, reason, elapsedMs: ms - start, ms, at: new Date().toISOString() });
+    const elapsedMs = ms - start;
+    if (elapsedMs >= deadlineMs) {
+      status = 'FAIL';
+      via = 'deadline';
+      reason = null;
+    }
+    result = Object.freeze({ status, via, reason, elapsedMs, ms, at: new Date().toISOString() });
     clearTimeout(timer);
     for (const [event, callback] of handlers) page.off(event, callback);
     resolve(result);

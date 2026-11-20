@@ -56,6 +56,23 @@ test('unrelated failure ends at deadline, not on the unrelated event', async () 
   verifyCleanup(page);
 });
 
+for (const event of ['requestfinished', 'requestfailed']) {
+  test(`late ${event} cannot beat a deadline when the timer callback is delayed`, async () => {
+    const page = new EventEmitter(), target = request();
+    const monitor = observeRequest(page, select, { deadlineMs: 10 });
+    page.emit('request', target);
+    // Block this thread past the deadline so the timer cannot run before emit.
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 30);
+    page.emit(event, target);
+    const decision = await monitor.done;
+    assert.equal(decision.status, 'FAIL');
+    assert.equal(decision.via, 'deadline');
+    assert.equal(decision.reason, null);
+    assert.ok(decision.elapsedMs >= 10);
+    verifyCleanup(page);
+  });
+}
+
 for (const [event, via] of [['close', 'page-close'], ['crash', 'page-crash'], ['dispose', 'disposed']]) {
   test(`${event} yields distinct failure and removes observers`, async () => {
     const page = new EventEmitter();

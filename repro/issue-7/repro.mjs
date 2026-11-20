@@ -47,17 +47,17 @@ const trigger = (page, kind) => page.evaluate(async ({ kind, ref }) => {
   });
 }, {kind, ref});
 
-async function examine(page, kind, compareLegacy) {
+async function examine(page, kind, compareLegacy, observation) {
   const url = origin + ref;
   const count = event => page.listenerCount(event);
   const eventNames = ['request', 'response', 'requestfinished', 'requestfailed', 'close', 'crash'];
   const before = eventNames.map(count);
   const diagnostic = observeRequest(page, request => request.url() === url && request.resourceType() === kind, { deadlineMs });
-  const events = [];
-  let oldNotice, oldFinal, oldTimer, browserResponse, responseTask;
+  observation.events = [];
+  let oldFinal, oldTimer, responseTask;
   let oldResolved = false;
   function add(type, req, details = {}) {
-    if (diagnostic.matches(req)) events.push({ type, ...now(), ...details });
+    if (diagnostic.matches(req)) observation.events.push({ type, ...now(), ...details });
   }
   const handlers = [
     ['request', req => add('request', req)],
@@ -66,7 +66,7 @@ async function examine(page, kind, compareLegacy) {
     ['response', res => {
       const req = res.request();
       if (!diagnostic.matches(req)) return;
-      browserResponse = { status: res.status(), ...now(), cacheControl: res.headers()['cache-control'] };
+      observation.browserResponse = { status: res.status(), ...now(), cacheControl: res.headers()['cache-control'] };
       add('response', req, { status: res.status() });
       if (compareLegacy) responseTask = res.finished().then(
         () => { oldResolved = true; oldFinal = { via: 'response-finished', ...now() }; },
@@ -75,27 +75,34 @@ async function examine(page, kind, compareLegacy) {
     }],
   ];
   for (const [event, callback] of handlers) page.on(event, callback);
-  const start = now();
+  observation.start = now();
   const oldDone = compareLegacy && new Promise(resolve => {
-    oldTimer = setTimeout(() => resolve({
-      via: 'deadline', ...now(), unresolved: !oldResolved, promiseStarted: Boolean(responseTask),
-    }), deadlineMs);
+    oldTimer = setTimeout(() => {
+      observation.oldNotice = {
+        via: 'deadline', ...now(), unresolved: !oldResolved, promiseStarted: Boolean(responseTask),
+      };
+      resolve();
+    }, deadlineMs);
   });
   // The legacy experiment waits for its own deadline independently of the new decision.
-  let actionTimer;
-  const pageResult = Promise.race([
-    trigger(page, kind),
-    new Promise((_, reject) => { actionTimer = setTimeout(() => reject(new Error('page observer deadline')), deadlineMs); }),
-  ]).finally(() => clearTimeout(actionTimer));
   try {
-    const [decision, observed] = await Promise.all([diagnostic.done, pageResult]);
-    if (compareLegacy) oldNotice = await oldDone;
-    return { start, decision, observed, events, browserResponse, oldNotice, legacySettlement: () => oldFinal, responseTask, listenerCleanup: null };
+    let actionTimer;
+    const pageResult = Promise.race([
+      trigger(page, kind),
+      new Promise((_, reject) => { actionTimer = setTimeout(() => reject(new Error('page observer deadline')), deadlineMs); }),
+    ]).finally(() => clearTimeout(actionTimer));
+    const [, observed] = await Promise.all([diagnostic.done, pageResult]);
+    observation.observed = observed;
+    if (compareLegacy) await oldDone;
   } finally {
     diagnostic.dispose();
     clearTimeout(oldTimer);
     for (const [event, callback] of handlers) page.off(event, callback);
+    observation.decision = await diagnostic.done;
+    observation.responseTask = responseTask;
+    observation.legacySettlement = () => oldFinal;
     assert.deepEqual(eventNames.map(count), before, 'temporary listeners must be removed');
+    observation.listenerCleanup = 'PASS';
   }
 }
 
@@ -107,18 +114,19 @@ async function scenario(browser, engine, kind, status) {
   try {
     const page = await context.newPage();
     await page.goto(origin, { timeout: deadlineMs });
-    const first = await examine(page, 'script', false);
+    const first = {};
     row.first = first;
+    await examine(page, 'script', false, first);
     assert.equal(first.decision.via, 'requestfinished');
     assert.equal(first.browserResponse.status, 200);
     assert.deepEqual(first.observed, { event: 'load', marker: 1 });
-    const second = await examine(page, kind, status === 404 && kind === 'script');
+    const second = {};
     row.second = second;
+    await examine(page, kind, status === 404 && kind === 'script', second);
     assert.equal(accounting.length, 2);
     assert.deepEqual(accounting.map(x => [x.sequence, x.status, x.ifNoneMatch, Boolean(x.finished)]), [[1, 200, null, true], [2, status, null, true]]);
     for (const check of [first, second]) {
       assert.equal(check.browserResponse.cacheControl, 'no-store');
-      check.listenerCleanup = 'PASS';
     }
     assert.equal(second.browserResponse.status, status);
     if (kind === 'script' && status === 404) {
@@ -158,7 +166,7 @@ async function scenario(browser, engine, kind, status) {
       clearTimeout(timer);
       second.legacyAfterClose = second.legacySettlement() ?? null;
     }
-    if (second) {
+    if (second?.decision) {
       const beforeClose = second.decision.ms < row.contextClose.ms;
       second.beforeContextClose = beforeClose;
       if (!beforeClose) { row.regression = 'FAIL'; row.error ??= 'terminal decision must precede close'; }
