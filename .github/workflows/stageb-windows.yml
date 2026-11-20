@@ -1,0 +1,63 @@
+name: Stage B Windows browser verification
+
+on:
+  push:
+    branches:
+      - diagnostic/stageb-yamanaka-module
+    paths:
+      - 'repro/issue-7/**'
+      - '.github/workflows/stageb-windows.yml'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+    paths:
+      - 'repro/issue-7/**'
+      - '.github/workflows/stageb-windows.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: stageb-windows-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  stageb-browser:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: repro/issue-7
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+      - name: Set up Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: repro/issue-7/package-lock.json
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Install pinned Playwright browsers
+        run: npx playwright install chromium webkit
+      - name: Run Stage B Node contract and HTTP tests
+        run: node --test diagnostic.test.mjs stageb-contract.test.mjs stageb-server.test.mjs
+      - name: Execute Stage B Chromium and WebKit
+        shell: pwsh
+        run: |
+          $evidence = Join-Path $env:RUNNER_TEMP 'stageb-evidence'
+          New-Item -ItemType Directory -Force -Path $evidence | Out-Null
+          $env:STAGEB_OUTPUT = Join-Path $evidence 'stageb.json'
+          & node stageb-module.mjs both 1> (Join-Path $evidence 'stdout.txt') 2> (Join-Path $evidence 'stderr.txt')
+          $code = $LASTEXITCODE
+          [System.IO.File]::WriteAllText((Join-Path $evidence 'exit.txt'), "$code`n")
+          if ($code -ne 0) { throw "Stage B browser diagnostic exited with $code" }
+      - name: Upload original diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stageb-windows-evidence
+          path: ${{ runner.temp }}\stageb-evidence\
+          if-no-files-found: warn
+          retention-days: 7
