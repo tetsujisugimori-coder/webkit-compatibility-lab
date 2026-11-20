@@ -2,22 +2,28 @@ import assert from 'node:assert/strict';
 export function classify(row,payload){
  assert.ok(row && ['module200','module404','fetch404','module-revalidation'].includes(row.scenario));
  const cached=row.scenario==='module-revalidation', error=row.scenario.includes('404');
- assert.equal(row.attempts?.length,cached?2:1);
- assert.ok(Array.isArray(row.server)&&row.server.length>0);
+ const expectedAttempts=cached?2:1;
+ if(!Array.isArray(row.attempts)||row.attempts.length<expectedAttempts)throw new Error('INCOMPLETE_ATTEMPTS');
+ assert.equal(row.attempts.length,expectedAttempts);
+ if(!Array.isArray(row.server)||row.server.length===0)throw new Error('INCOMPLETE_SERVER_RECORDS');
+ if(row.server.some(r=>!r||!Number.isInteger(r.status)||!r.method||!r.path||!r.finishAt))throw new Error('INCOMPLETE_SERVER_RECORD');
  assert.equal(row.server[0].status,error?404:200);
- for(const r of row.server){assert.equal(r.method,'GET');assert.equal(r.path,'/assets/index-D_Wx_CwS.js');assert.ok(r.finishAt,'server response finish required');}
+ for(const r of row.server){assert.equal(r.method,'GET');assert.equal(r.path,'/assets/index-D_Wx_CwS.js');}
  assert.ok(row.server.length<=(cached?2:1));
  for(const [i,a] of row.attempts.entries()){
   if(!a.page||!a.terminal||!Number.isInteger(a.serverStart)||!Number.isInteger(a.serverEnd))throw new Error('INCOMPLETE_ATTEMPT');
   if(!Array.isArray(a.events)||!a.events.some(e=>e.event==='request')||!a.events.some(e=>e.event==='response'))throw new Error('INCOMPLETE_EVENT_CHAIN');
   assert.equal(a.events.filter(e=>e.event==='request').length,1);
   const responses=a.events.filter(e=>e.event==='response');
-  assert.equal(responses.length,1);assert.equal(responses[0].status,a.responseStatus);
+  assert.equal(responses.length,1);
+  if(!Number.isInteger(a.responseStatus)||!Number.isInteger(responses[0].status))throw new Error('INCOMPLETE_RESPONSE_STATUS');
+  assert.equal(responses[0].status,a.responseStatus);
   if(!a.events.some(e=>e.event===a.terminal.via))throw new Error('INCOMPLETE_TERMINAL_EVENT');
   assert.deepEqual(a.events.map(e=>e.event),['request','response',a.terminal.via]);
   assert.equal(a.events[0].method,'GET');
   assert.equal(a.events[0].path,'/assets/index-D_Wx_CwS.js');
-  assert.ok(Number.isFinite(a.terminal.elapsedMs)&&a.terminal.elapsedMs>=0&&a.terminal.elapsedMs<5000);
+  if(!Number.isFinite(a.terminal.elapsedMs)||a.terminal.status===undefined||a.terminal.via===undefined)throw new Error('INCOMPLETE_TERMINAL_RECORD');
+  assert.ok(a.terminal.elapsedMs>=0&&a.terminal.elapsedMs<5000);
   assert.equal(a.terminal.via,row.scenario==='module404'?'requestfailed':'requestfinished');
   assert.equal(a.terminal.status,row.scenario==='module404'?'FAIL':'PASS');
   if(!cached||i===0)assert.equal(a.responseStatus,error?404:200);
