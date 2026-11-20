@@ -7,6 +7,12 @@ on:
     paths:
       - 'repro/issue-7/**'
       - '.github/workflows/stageb-windows.yml'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+    paths:
+      - 'repro/issue-7/**'
+      - '.github/workflows/stageb-windows.yml'
 
 permissions:
   contents: read
