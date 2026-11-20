@@ -38,11 +38,13 @@ npx playwright install chromium webkit
 node cache-revalidation.mjs > cache-revalidation.json
 ```
 
-`chromium`・`webkit` のいずれかを引数に指定できる。各条件を別のコンテキストとローカルサーバーで実行し、先行200と後続要求を実送信の `If-None-Match` で照合する。応答には `Cache-Control: no-cache` を付ける。Playwrightのルーティングは使わない。各 `fetch` はページで読んだ全バイトをSHA-256で照合する。スクリプトは `integrity` に初回200と同じ本文のSHA-256を設定し、`load` と実行マーカーを確認する。別内容のハッシュを指定した対照では `error` とマーカーなしを要求する。手動 `If-None-Match` は別対照とする。[Fetch Standard](https://fetch.spec.whatwg.org/#http-network-or-cache-fetch) · [Subresource Integrity](https://www.w3.org/TR/sri/)
+`chromium`・`webkit` のいずれかを引数に指定できる。各条件を別のコンテキストとローカルサーバーで実行し、先行200と後続要求を実送信の `If-None-Match` で照合する。応答には `Cache-Control: no-cache` を付ける。Playwrightのルーティングは使わない。各 `fetch` はページで読んだ全バイトをSHA-256で照合する。手動 `If-None-Match` は別対照とする。[Fetch Standard](https://fetch.spec.whatwg.org/#http-network-or-cache-fetch)
+
+スクリプトとスタイルシートには `integrity` で初回200の本文のSHA-256を指定する。初回と再検証は別文書で読み込む。スクリプトは `load` と実行マーカーを、CSSは `load` と適用前後の計算済み文字色を確認する。別内容のハッシュを指定した対照では、同じサーバー304を記録したうえで、`error` とマーカーなし、またはCSSの基準色を確認する。[Subresource Integrity](https://www.w3.org/TR/sri/)
 
 ### Linuxでの観測（2026-11-20 JST）
 
-Playwright 1.56.1、Chromium 141.0.7390.37、WebKit 26.0。各条件を2回実行し、全14条件の試行記録は同じだった。
+Playwright 1.56.1、Chromium 141.0.7390.37、WebKit 26.0。各条件を2回実行し、全18条件の試行記録は同じだった。
 
 | 2回目の読み込み | Chromium | WebKit |
 | --- | --- | --- |
@@ -51,5 +53,7 @@ Playwright 1.56.1、Chromium 141.0.7390.37、WebKit 26.0。各条件を2回実�
 | 手動 `If-None-Match` の `fetch` | サーバーとページで304。ページ本文0バイト、Playwrightの本文取得は例外 | 同じ |
 | 正しいハッシュのスクリプト | サーバー304、`load` と初回本文の実行マーカー。Playwrightは304、本文取得は例外 | 同じ |
 | 異なるハッシュのスクリプト | サーバー304、`error`、実行マーカーなし。Playwrightは200、35バイトを取得 | サーバー304、`error`、実行マーカーなし。Playwrightは304、本文取得は例外 |
+| 正しいハッシュのCSS | サーバー304、`load`、文字色が `rgb(1, 2, 3)` から `rgb(20, 40, 60)` に変化。Playwrightは304、本文取得は例外 | 同じ |
+| 異なるハッシュのCSS | サーバー304、`error`、基準色を維持。Playwrightは200、初回の41バイトを取得 | サーバー304、`error`、基準色を維持。Playwrightは304、本文取得は例外 |
 
-Chromiumは7/7、WebKitは3/7。WebKitの4件は、想定した自動条件付き要求が成立しなかったためFAILを保持し、CLIは終了1を返す。Playwright 1.56.1の `response.body()` は、公開された応答ステータスが300〜399の場合に本文取得を拒否する。今回の合成スクリプトでは、304後にどの内容が実行されたかをハッシュとマーカーで確認できた。WebKitの自動 `fetch` がこの条件で再取得した理由と、山中城の本番使用バイトはUNKNOWN。404の初発中断原因は別途Issue #7に残る。
+Chromiumは9/9、WebKitは5/9。WebKitの4件は、想定した自動条件付き要求が成立しなかったためFAILを保持し、CLIは終了1を返す。Playwright 1.56.1の `response.body()` は、公開された応答ステータスが300〜399の場合に本文取得を拒否する。304後にブラウザが使った合成JSとCSSの内容は、ハッシュとページで確認した。WebKitの自動 `fetch` がこの条件で再取得した理由と、山中城の本番使用バイトはUNKNOWN。404の初発中断原因は別途Issue #7に残る。
