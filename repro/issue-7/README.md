@@ -64,7 +64,7 @@ Chromiumは9/9、WebKitは5/9。WebKitの4件は、想定した自動条件付�
 node cache-revalidation.mjs --compare-webkit-contexts > cache-contexts.json
 ```
 
-上のコマンドは、既存の自動 `fetch` 4条件を `newContext()` と `launchPersistentContext('')` で実行する。後者には毎回新しい一時プロファイルを使用する。URL、応答ヘッダー、本文、ブラウザ版、読み込み順は同じ。初回200を同じコンテキスト内で読み、その後の `If-None-Match`、サーバー応答、ページ本文のSHA-256を比較する。元の4件はFAILのまま記録するため、この比較も終了1を返す。[Playwright BrowserContext](https://playwright.dev/docs/api/class-browsercontext) · [launchPersistentContext](https://playwright.dev/docs/api/class-browsertype#browser-type-launch-persistent-context)
+上のコマンドは、既存の自動 `fetch` 4条件を `newContext()` と `launchPersistentContext('')` で実行する。後者には毎回新しい一時プロファイルを使用する。試行ごとにローカルサーバーを立て、同じパス、応答ヘッダー、本文、ブラウザ版、読み込み順を使用する。各試行では初回200と後続要求を同じURL・コンテキストで読み、後続要求の `If-None-Match`、サーバー応答、ページ本文のSHA-256を比較する。元の4件はFAILのまま記録するため、この比較も終了1を返す。[Playwright BrowserContext](https://playwright.dev/docs/api/class-browsercontext) · [launchPersistentContext](https://playwright.dev/docs/api/class-browsertype#browser-type-launch-persistent-context)
 
 | WebKit 26.0での2回目の読み込み | 非永続コンテキスト | 一時プロファイル付き永続コンテキスト |
 | --- | --- | --- |
