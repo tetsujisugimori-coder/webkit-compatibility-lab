@@ -2,7 +2,14 @@
 
 ## Current outcome
 
-PARTIAL. Diagnostic implementation, 21 local Node tests (including 12 loopback HTTP requests) PASS. Exact Playwright Chromium/WebKit execution BLOCKED by absent browser binaries; all eight browser cases NOT_TESTED. Explicit system Chromium 156.0.8078.79 fallback also failed to launch with `socket() failed: Operation not permitted`; it is not the pinned Chromium and contributes no browser result. No protection workaround was applied.
+**Stage B LIMITED PASS (Windows local synthetic module diagnostic, 2026-11-20 JST).** On GALLERIA, the previously fixed implementation HEAD `43edb7b66b149a5a3aa7ec24c5d5bec5fb6685ba` was executed once with Playwright 1.56.1, Chromium 141.0.7390.37 and WebKit 26.0. Both engines passed all four preregistered scenarios (8/8); Node tests were 21/21. Independent reclassification of the attached browser raw records confirmed 8/8, exit code 0 and empty stderr for both engines. This is not a rerun against subsequent documentation/classification edits.
+
+- `module200`: `requestfinished`, DOM `load`, execution marker in both engines.
+- `module404`: expected diagnostic `FAIL` via `requestfailed` before the 5 s deadline (Chromium 26.20 ms; WebKit 9.91 ms), DOM `error`, no marker. This expected failure is a passing negative-control scenario, not an accepted product failure.
+- `fetch404`: `requestfinished`, HTTP 404 with `ok=false`, body 81 bytes and SHA-256 matching the synthetic fixture in both engines.
+- `module-revalidation`: both engines observed initial 200, matching `If-None-Match` followed by wire 304 with zero server body bytes, and a second DOM `load` with the marker. The marker does **not** establish the exact cached bytes used by Yamanaka.
+
+The Windows attachment ZIP (9,257 bytes, SHA-256 `8cd7d511904aa87941ca85bd5814700070ec9b13a89014a5d7c05133566074b2`) had CRC checks on 16 entries and bytewise identity for eight earlier attachments. This is limited evidence reconciliation, not a new independent browser execution, production-byte attribution, or a general preservation acceptance. The initial Linux NOT_TESTED result is retained below as history.
 
 This is a local synthetic compatibility diagnostic, not product acceptance, browser-internal explanation, timing benchmark, or formal CI. Yamanaka Stage 3-B HOLD, past FAIL/UNKNOWN, and 304 alternative NOT_ADOPTED remain.
 
@@ -40,7 +47,7 @@ Set TMPDIR to a dedicated case directory. Do not reuse output paths. Collect std
 
 ## Next step
 
-Run the same fixed diagnostic once in an approved environment with the pinned executables. No product changes, timeout relaxation, production requests or extra browser-internal investigation are needed to unblock this diagnostic. Parent coordinator owns GitHub submission and independent review.
+The Windows Chromium/WebKit single-run comparison is complete at `43edb7b6` and requires no repeat for these documentation and classifier-only changes. Complete the limited code-review follow-up and decide whether to merge the Lab diagnostic PR independently of Yamanaka product acceptance. No Yamanaka product patch is recommended. Stage 3-B HOLD, B6a formal FAIL and the 304 alternative NOT_ADOPTED remain. Historical cache-used bytes and the first internal 404 abort cause remain UNKNOWN.
 
 ## Comparison and handoff
 
@@ -50,8 +57,12 @@ Run the same fixed diagnostic once in an approved environment with the pinned ex
 | Lab #9 | controlled cache/revalidation comparisons | historical product used bytes |
 | Lab #10 | controlled HTTP error timing contrasts | internal browser root cause |
 | Fixed Yamanaka historical raw | module200 body and later304 response observed | later304 body API/usedBytes |
-| New Stage B | same path/module/crossorigin and header-shape fixture; HTTP unit12 requests pass | all8 pinned browser cases NOT_TESTED |
+| New Stage B | synthetic module/path/header-shape fixture; Windows Chromium 4/4 and WebKit 4/4, Node 21/21, independent raw reclassification 8/8 | Yamanaka actual used cached bytes, full product/browser acceptance, internal abort root cause |
 
-Product fetch/response handling (`src/main.js`, line53 `!r.ok` check) is outside this experiment; synthetic fetch404 does not bypass that product check. A later product-side diagnostic may watch the identity-matched requestfailed plus finite deadline, but only after this equivalent module path is exercised in a usable browser environment. Do not treat304 as empty cached content or infer used bytes from a marker. No product patch is proposed here.
+Product fetch/response handling (`src/main.js`, line53 `!r.ok` check) is outside this experiment; synthetic fetch404 does not bypass that product check. A future product-side diagnostic could use the identity-matched `requestfailed` with a finite deadline if new product-specific evidence justifies it; that would be a separate, explicitly approved task. Do not treat304 as empty cached content or infer used bytes from a marker. No product patch is proposed here.
+
+## Historical Linux-only outcome (before Windows verification)
+
+PARTIAL. Diagnostic implementation, 21 local Node tests (including 12 loopback HTTP requests) PASS. Exact Playwright Chromium/WebKit execution BLOCKED by absent browser binaries; all eight browser cases NOT_TESTED. Explicit system Chromium 156.0.8078.79 fallback also failed to launch with `socket() failed: Operation not permitted`; it is not the pinned Chromium and contributes no browser result. No protection workaround was applied.
 
 Local `node --test diagnostic.test.mjs stageb-contract.test.mjs stageb-server.test.mjs` finished exit0,21/21, stderr0bytes. Browser launch attempt command exit1, both pinned engines BLOCKED and8 rows NOT_TESTED. HTTP test12 actual requests are not browser trials. Raw artifacts remain in the case evidence directory; source/dependency bootstrap failure and earlier launch attempts remain separately named, never replaced. New report file collision is rejected by exclusive creation. Output provenance and hashes are recorded in the accompanying manifest; preservation acceptance is separate.
