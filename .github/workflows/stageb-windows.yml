@@ -3,7 +3,7 @@ name: Stage B Windows browser verification
 on:
   push:
     branches:
-      - diagnostic/stageb-yamanaka-module
+      - main
     paths:
       - 'repro/issue-7/**'
       - '.github/workflows/stageb-windows.yml'
@@ -13,6 +13,7 @@ on:
     paths:
       - 'repro/issue-7/**'
       - '.github/workflows/stageb-windows.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
