@@ -20,6 +20,7 @@ export function classify(row,payload){
   assert.equal(responses[0].status,a.responseStatus);
   if(!a.events.some(e=>e.event===a.terminal.via))throw new Error('INCOMPLETE_TERMINAL_EVENT');
   assert.deepEqual(a.events.map(e=>e.event),['request','response',a.terminal.via]);
+  if(!a.events[0].method||!a.events[0].path)throw new Error('INCOMPLETE_REQUEST_METADATA');
   assert.equal(a.events[0].method,'GET');
   assert.equal(a.events[0].path,'/assets/index-D_Wx_CwS.js');
   if(!Number.isFinite(a.terminal.elapsedMs)||a.terminal.status===undefined||a.terminal.via===undefined)throw new Error('INCOMPLETE_TERMINAL_RECORD');
@@ -29,13 +30,16 @@ export function classify(row,payload){
   if(!cached||i===0)assert.equal(a.responseStatus,error?404:200);
   else assert.ok([200,304].includes(a.responseStatus));
   if(row.scenario==='fetch404'){
+   if(!['status','ok','bytes','sha256','marker'].every(key=>Object.hasOwn(a.page,key)))throw new Error('INCOMPLETE_FETCH_RESULT');
    assert.equal(a.page.status,404);assert.equal(a.page.ok,false);assert.equal(a.page.bytes,payload.bytes);assert.equal(a.page.sha256,payload.sha256);assert.equal(a.page.marker,null);
   }else{
+   if(!['event','marker'].every(key=>Object.hasOwn(a.page,key)))throw new Error('INCOMPLETE_MODULE_RESULT');
    assert.equal(a.page.event,error?'error':'load');assert.equal(a.page.marker,error?null:'synthetic-module-v1');
   }
  }
  if(!cached){assert.equal(row.server.length,1);return 'PASS';}
  if(row.server.length!==2||row.server[1].status!==304)return 'UNKNOWN';
+ if(!Object.hasOwn(row.server[0],'etag')||!Object.hasOwn(row.server[0],'ifNoneMatch')||!Object.hasOwn(row.server[1],'ifNoneMatch')||!Object.hasOwn(row.server[1],'bodyBytes'))throw new Error('INCOMPLETE_REVALIDATION_METADATA');
  assert.equal(row.attempts[0].serverStart,0);assert.equal(row.attempts[0].serverEnd,1);
  assert.equal(row.attempts[1].serverStart,1);assert.equal(row.attempts[1].serverEnd,2);
  assert.equal(row.server[0].ifNoneMatch,null);
