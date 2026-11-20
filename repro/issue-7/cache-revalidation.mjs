@@ -6,10 +6,13 @@ import { chromium, webkit } from 'playwright';
 
 const require = createRequire(import.meta.url);
 const timeoutMs = 5_000;
+const launchTimeoutMs = 10_000;
 const cacheControl = 'no-cache';
 const engines = { chromium, webkit };
 const selected = process.argv.slice(2);
-assert.ok(selected.every(name => Object.hasOwn(engines, name)), 'pass chromium or webkit only');
+const compareContexts = selected.length === 1 && selected[0] === '--compare-webkit-contexts';
+assert.ok(compareContexts || selected.every(name => Object.hasOwn(engines, name)),
+  'pass chromium, webkit, or --compare-webkit-contexts');
 
 const hash = (body, format = 'hex') => createHash('sha256').update(body).digest(format);
 function fixture(marker, text) {
@@ -106,7 +109,7 @@ async function observe(page, origin, options, result) {
   }
 }
 
-async function run(browser, scenario, row) {
+async function run(openContext, scenario, row) {
   const { kind, networkStatus, pageStatus, manual, changed, expected, integrity, cacheMode = 'default', sameDocument } = scenario;
   const stylesheet = kind === 'stylesheet';
   const path = stylesheet ? '/asset.css' : '/asset.js';
@@ -134,7 +137,8 @@ async function run(browser, scenario, row) {
   const origin = `http://127.0.0.1:${server.address().port}`;
   let context;
   try {
-    context = await browser.newContext();
+    context = await openContext();
+    row.browserVersion = context.browser().version();
     const page = await context.newPage();
     await page.goto(origin + '/prime', { timeout: timeoutMs });
     await observe(page, origin, { kind, path, integrity: initial.integrity }, row.prime);
@@ -184,19 +188,33 @@ const report = {
   stylesheets: stylesheetVersions.map(({ body, ...fixture }) => ({ ...fixture, bytes: body.length })),
   rows: [],
 };
-for (const [engine, type] of Object.entries(engines)) {
-  if (selected.length && !selected.includes(engine)) continue;
+const plans = compareContexts
+  ? [{ engine: 'webkit', contextType: 'non-persistent' }, { engine: 'webkit', contextType: 'persistent' }]
+  : Object.keys(engines).filter(engine => !selected.length || selected.includes(engine))
+    .map(engine => ({ engine, contextType: 'non-persistent' }));
+const cases = compareContexts ? scenarios.filter(scenario => scenario.kind === 'fetch' && !scenario.manual) : scenarios;
+for (const { engine, contextType } of plans) {
+  const type = engines[engine];
+  const contextMetadata = compareContexts ? { contextType } : {};
   let browser;
-  try {
-    browser = await type.launch({ timeout: 10_000 });
-  } catch (error) {
-    for (const { name } of scenarios) report.rows.push({ engine, name, result: 'NOT_TESTED', error: error.message });
-    continue;
+  if (contextType === 'non-persistent') {
+    try {
+      browser = await type.launch({ timeout: launchTimeoutMs });
+    } catch (error) {
+      for (const { name } of cases) {
+        report.rows.push({ engine, ...contextMetadata, name, result: 'NOT_TESTED', error: error.message });
+      }
+      continue;
+    }
   }
+  // An empty userDataDir gives every persistent run a fresh Playwright-managed profile.
+  const openContext = browser
+    ? () => browser.newContext()
+    : () => type.launchPersistentContext('', { timeout: launchTimeoutMs });
   try {
-    for (const scenario of scenarios) {
+    for (const scenario of cases) {
       const row = {
-        engine, browserVersion: browser.version(), name: scenario.name,
+        engine, ...contextMetadata, browserVersion: browser?.version() ?? null, name: scenario.name,
         fetchCacheMode: scenario.kind === 'fetch' ? scenario.cacheMode ?? 'default' : null,
         sameDocument: Boolean(scenario.sameDocument),
         integrity: scenario.integrity ?? null,
@@ -204,15 +222,15 @@ for (const [engine, type] of Object.entries(engines)) {
       };
       report.rows.push(row);
       try {
-        await run(browser, scenario, row);
+        await run(openContext, scenario, row);
         row.result = 'PASS';
       } catch (error) {
-        row.result = 'FAIL';
+        row.result = row.browserVersion ? 'FAIL' : 'NOT_TESTED';
         row.error = error.message;
       }
     }
   } finally {
-    await browser.close();
+    await browser?.close();
   }
 }
 console.log(JSON.stringify(report, null, 2));

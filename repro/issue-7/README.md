@@ -56,4 +56,19 @@ Playwright 1.56.1、Chromium 141.0.7390.37、WebKit 26.0。各条件を2回実�
 | 正しいハッシュのCSS | サーバー304、`load`、文字色が `rgb(1, 2, 3)` から `rgb(20, 40, 60)` に変化。Playwrightは304、本文取得は例外 | 同じ |
 | 異なるハッシュのCSS | サーバー304、`error`、基準色を維持。Playwrightは200、初回の41バイトを取得 | サーバー304、`error`、基準色を維持。Playwrightは304、本文取得は例外 |
 
-Chromiumは9/9、WebKitは5/9。WebKitの4件は、想定した自動条件付き要求が成立しなかったためFAILを保持し、CLIは終了1を返す。Playwright 1.56.1の `response.body()` は、公開された応答ステータスが300〜399の場合に本文取得を拒否する。304後にブラウザが使った合成JSとCSSの内容は、ハッシュとページで確認した。WebKitの自動 `fetch` がこの条件で再取得した理由と、山中城の本番使用バイトはUNKNOWN。404の初発中断原因は別途Issue #7に残る。
+Chromiumは9/9、WebKitは5/9。WebKitの4件は、想定した自動条件付き要求が成立しなかったためFAILを保持し、CLIは終了1を返す。Playwright 1.56.1の `response.body()` は、公開された応答ステータスが300〜399の場合に本文取得を拒否する。304後にブラウザが使った合成JSとCSSの内容は、ハッシュとページで確認した。山中城の本番使用バイトはUNKNOWN。404の初発中断原因は別途Issue #7に残る。
+
+### WebKitの自動 `fetch` をプロファイル別に比較
+
+```sh
+node cache-revalidation.mjs --compare-webkit-contexts > cache-contexts.json
+```
+
+上のコマンドは、既存の自動 `fetch` 4条件を `newContext()` と `launchPersistentContext('')` で実行する。後者には毎回新しい一時プロファイルを使用する。URL、応答ヘッダー、本文、ブラウザ版、読み込み順は同じ。初回200を同じコンテキスト内で読み、その後の `If-None-Match`、サーバー応答、ページ本文のSHA-256を比較する。元の4件はFAILのまま記録するため、この比較も終了1を返す。[Playwright BrowserContext](https://playwright.dev/docs/api/class-browsercontext) · [launchPersistentContext](https://playwright.dev/docs/api/class-browsertype#browser-type-launch-persistent-context)
+
+| WebKit 26.0での2回目の読み込み | 非永続コンテキスト | 一時プロファイル付き永続コンテキスト |
+| --- | --- | --- |
+| 同じETag（別文書・同じ文書・`cache: 'no-cache'`） | 3件ともヘッダーなしで200を再取得 | 3件とも旧ETagを送り、サーバー304。ページは初回と同じ35バイト・SHA-256。Playwrightは304、本文取得は例外 |
+| ETagを変更 | ヘッダーなしで200、新しい36バイト | 旧ETagを送って200、新しい36バイト |
+
+同じ版・環境で非永続は0/4、永続は4/4。全8条件の記録は2回で一致した。Playwright 1.56.1のWebKit上流基準版では、WebKitの `NetworkSession` は非一時セッションについてネットワークのディスクキャッシュを初期化し、`NetworkResourceLoader` のキャッシュ経路はそのキャッシュを必要とする。今回の差はこの実装と整合する。結果を確認した範囲はPlaywright同梱WebKit 26.0/Linuxの合成HTTP。[Playwrightの上流基準版](https://github.com/microsoft/playwright/blob/v1.56.1/browser_patches/webkit/UPSTREAM_CONFIG.sh) · [NetworkSession.cpp](https://github.com/WebKit/WebKit/blob/db897909f7c31d9b38793374c66427b6a4cb3dd3/Source/WebKit/NetworkProcess/NetworkSession.cpp#L184-L200) · [NetworkResourceLoader.cpp](https://github.com/WebKit/WebKit/blob/db897909f7c31d9b38793374c66427b6a4cb3dd3/Source/WebKit/NetworkProcess/NetworkResourceLoader.cpp#L199-L211)
