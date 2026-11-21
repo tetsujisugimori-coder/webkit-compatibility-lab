@@ -6,6 +6,7 @@ const http = require('node:http');
 const crypto = require('node:crypto');
 const assert = require('node:assert/strict');
 const {chromium, webkit} = require('playwright');
+const {finalize, recorder} = require('./verdict.cjs');
 
 const sources = [
   {name: 'old-pushstate', head: '3e56d13d77048d056e79c6971e6e7d24ad92b4ff', directory: 'atlas-old'},
@@ -16,6 +17,7 @@ const scenarios = [
   {name: 'reference-prior-reload', attempts: 2},
   {name: 'reference-prior-goto-url', attempts: 1},
 ];
+const limited = process.argv.includes('--only-pr17-timeouts');
 const out = path.resolve(process.argv[2] || 'evidence/atlas-history');
 fs.mkdirSync(out, {recursive: true});
 const sourceHtml = new Map();
@@ -27,7 +29,7 @@ for (const source of sources) {
   sourceHashes[source.name] = crypto.createHash('sha256').update(html).digest('hex');
 }
 const results = {
-  schema: 1, collected_at: new Date().toISOString(), node: process.version,
+  schema: 2, scope: limited ? 'PR17-timeout-two-attempts' : 'full-comparison', collected_at: new Date().toISOString(), node: process.version,
   platform: process.platform, playwright: require('playwright/package.json').version,
   sources: sources.map(s => ({name: s.name, head: s.head, html_sha256: sourceHashes[s.name]})),
   viewport: {width: 390, height: 1000}, reduced_motion: 'no-preference',
@@ -53,20 +55,57 @@ async function executeCase(browser, engineName, source, scenario, attempt, origi
   };
   results.cases.push(entry);
   let context;
-  let crashed = false;
+  let caughtError = null;
+  let passed = false;
+  let closingContext = false;
+  const record = recorder(entry);
+  const disconnected = () => record('browser.disconnected', {expected: false});
+  browser.on('disconnected', disconnected);
   try {
     context = await browser.newContext({viewport: results.viewport, reducedMotion: 'no-preference'});
     const page = await context.newPage();
     page.setDefaultTimeout(10000);
     page.setDefaultNavigationTimeout(15000);
-    page.on('crash', () => {crashed = true; entry.events.push('page.crash');});
-    page.on('pageerror', e => entry.events.push('pageerror:' + e.message));
+    page.on('crash', () => record('page.crash'));
+    page.on('close', () => record('page.close', {expected: closingContext}));
+    page.on('pageerror', e => record('pageerror', {message: String(e.message).slice(0, 300)}));
+    page.on('domcontentloaded', () => record('domcontentloaded'));
+    page.on('load', () => record('load'));
+    page.on('response', response => {
+      if (!response.request().isNavigationRequest()) return;
+      const forStep = entry.current_step;
+      const details = {url: response.url(), status: response.status(), for_step: forStep};
+      record('http.response', details);
+      response.finished().then(
+        () => record('http.body.complete', details),
+        error => record('http.body.error', {...details, message: String(error).slice(0, 300)})
+      );
+    });
+    page.on('requestfinished', request => {
+      if (request.isNavigationRequest()) record('http.request.finished', {url: request.url()});
+    });
+    page.on('requestfailed', request => {
+      if (request.isNavigationRequest()) record('http.request.failed',
+        {url: request.url(), failure: String(request.failure() || '')});
+    });
     const base = origin + '/' + source.name;
     async function step(label, action) {
-      entry.steps.push({name: label, started_at: new Date().toISOString()});
-      const value = await action();
-      entry.steps[entry.steps.length - 1].ended_at = new Date().toISOString();
-      return value;
+      const stepEntry = {name: label, started_at: new Date().toISOString()};
+      entry.steps.push(stepEntry);
+      entry.current_step = label;
+      record('step.start', {name: label});
+      try {
+        const value = await action();
+        stepEntry.ended_at = new Date().toISOString();
+        record('step.end', {name: label});
+        return value;
+      } catch (e) {
+        stepEntry.failed_at = new Date().toISOString();
+        record('step.error', {name: label, message: String(e.message || e).slice(0, 300)});
+        throw e;
+      } finally {
+        entry.current_step = null;
+      }
     }
     if (scenario.name === 'direct-clause-reload') {
       await step('direct C05 navigate', () => page.goto(base + '#EK-0120-C05'));
@@ -88,17 +127,32 @@ async function executeCase(browser, engineName, source, scenario, attempt, origi
     assert.equal(await page.locator('#EK-0120').getAttribute('open'), '');
     assert.equal(await page.evaluate(() => document.activeElement.id), 'EK-0120-C05');
     entry.final_url = page.url();
-    entry.result = 'PASS';
+    passed = true;
   } catch (e) {
-    const message = String(e && e.stack || e);
-    entry.error = message.slice(0, 3000);
-    entry.result = crashed || /Page crashed|Target page.*crashed|page\.crash/i.test(message)
-      ? 'CRASH'
-      : /Timeout|timed out/i.test(message) ? 'TIMEOUT' : 'FAIL';
+    caughtError = e;
+    entry.error = String(e && e.stack || e).slice(0, 3000);
+    record('exception', {message: String(e.message || e).slice(0, 300)});
   } finally {
-    if (context) {
-      try {await context.close();} catch (e) {entry.events.push('context.close:' + String(e).slice(0, 250));}
-    }
+    const verdict = await finalize({
+      error: caughtError, passed, events: entry.events, record,
+      close: async () => {
+        if (context) {
+          closingContext = true;
+          record('context.close.start');
+          try {
+            await context.close();
+            record('context.close.end');
+          } catch (e) {
+            record('context.close.error', {message: String(e).slice(0, 250)});
+          }
+        }
+      },
+    });
+    entry.provisional_result = verdict.provisional;
+    entry.result = verdict.result;
+    entry.observation_window_ms = verdict.observation_window_ms;
+    delete entry.current_step;
+    browser.off('disconnected', disconnected);
   }
 }
 
@@ -106,11 +160,11 @@ async function main() {
   await new Promise((resolve, reject) => server.listen(0, '127.0.0.1', e => e ? reject(e) : resolve()));
   const origin = 'http://127.0.0.1:' + server.address().port;
   try {
-    for (const [engineName, engine] of Object.entries({chromium, webkit})) {
+    for (const [engineName, engine] of Object.entries(limited ? {webkit} : {chromium, webkit})) {
       const browser = await engine.launch({headless: true});
       try {
-        for (const source of sources)
-          for (const scenario of scenarios)
+        for (const source of (limited ? sources.filter(s => s.name === 'old-pushstate') : sources))
+          for (const scenario of (limited ? scenarios.filter(s => s.name === 'reference-prior-reload') : scenarios))
             for (let i = 1; i <= scenario.attempts; i++)
               await executeCase(browser, engineName, source, scenario, i, origin);
       } finally {
