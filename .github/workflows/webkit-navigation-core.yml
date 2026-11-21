@@ -1,0 +1,75 @@
+name: WebKit navigation current-entry investigation
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'repro/webkit-navigation-core/**'
+      - '.github/workflows/webkit-navigation-core.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-core-history-comparison:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout lab fixed PR revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Checkout Atlas old fixed source
+        uses: actions/checkout@v4
+        with:
+          repository: tetsujisugimori-coder/historical-source-atlas
+          ref: 3e56d13d77048d056e79c6971e6e7d24ad92b4ff
+          path: atlas-old
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install one driver and two pinned WebKit binaries
+        shell: bash
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.engine-investigation/browsers
+        run: |
+          mkdir -p .engine-investigation/driver156 .engine-investigation/driver157
+          npm install --no-save --ignore-scripts --package-lock=false --prefix .engine-investigation/driver156 playwright@1.56.1
+          npm install --no-save --ignore-scripts --package-lock=false --prefix .engine-investigation/driver157 playwright@1.57.0
+          ./.engine-investigation/driver156/node_modules/.bin/playwright install --with-deps webkit
+          ./.engine-investigation/driver157/node_modules/.bin/playwright install webkit
+          test -x .engine-investigation/browsers/webkit-2215/pw_run.sh
+          test -x .engine-investigation/browsers/webkit-2227/pw_run.sh
+          node --check repro/webkit-navigation-core/investigate.cjs
+      - name: Compare r2215 and r2227 using Playwright 1.56.1 driver only
+        shell: bash
+        env:
+          DEBUG: pw:browser
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.engine-investigation/browsers
+        run: |
+          mkdir -p evidence/webkit-navigation-core
+          set +e
+          node repro/webkit-navigation-core/investigate.cjs \
+            --binary=.engine-investigation/browsers/webkit-2215/pw_run.sh \
+            --label=r2215 \
+            --out=evidence/webkit-navigation-core/r2215.json \
+            > evidence/webkit-navigation-core/r2215.stdout 2> evidence/webkit-navigation-core/r2215.stderr
+          old_exit=$?
+          node repro/webkit-navigation-core/investigate.cjs \
+            --binary=.engine-investigation/browsers/webkit-2227/pw_run.sh \
+            --label=r2227 \
+            --out=evidence/webkit-navigation-core/r2227.json \
+            > evidence/webkit-navigation-core/r2227.stdout 2> evidence/webkit-navigation-core/r2227.stderr
+          new_exit=$?
+          printf '%s\n' "$old_exit" > evidence/webkit-navigation-core/r2215.exit
+          printf '%s\n' "$new_exit" > evidence/webkit-navigation-core/r2227.exit
+          cat evidence/webkit-navigation-core/r2215.stdout
+          cat evidence/webkit-navigation-core/r2227.stdout
+          grep -Ei 'assertion|_M_is_engaged|Navigation::initializeForNewWindow|WebProcess' evidence/webkit-navigation-core/*.stderr | head -40 || true
+          test "$old_exit" -eq 0 && test "$new_exit" -eq 0
+      - name: Preserve raw browser and scenario records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: webkit-navigation-core-${{ github.run_id }}
+          path: evidence/webkit-navigation-core/
+          if-no-files-found: warn
+          retention-days: 7
