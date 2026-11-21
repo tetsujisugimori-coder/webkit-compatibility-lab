@@ -10,13 +10,9 @@ on:
 permissions:
   contents: read
 jobs:
-  history-compare:
+  verdict-timeout-recheck:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
-    strategy:
-      fail-fast: false
-      matrix:
-        playwright: ['1.56.1', '1.57.0']
     steps:
       - name: Checkout lab diagnostic
         uses: actions/checkout@v4
@@ -37,26 +33,28 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Install Playwright version and matching engines
+      - name: Unit tests for event order and classification
+        run: node --test repro/atlas-history/verdict.test.cjs
+      - name: Install pinned Playwright and WebKit only
         run: |
-          npm install --no-save --ignore-scripts --package-lock=false --prefix repro/atlas-history playwright@${{ matrix.playwright }}
-          ./repro/atlas-history/node_modules/.bin/playwright install --with-deps chromium webkit
-      - name: Run bounded comparison (crashes are diagnostic observations)
+          npm install --no-save --ignore-scripts --package-lock=false --prefix repro/atlas-history playwright@1.56.1
+          ./repro/atlas-history/node_modules/.bin/playwright install --with-deps webkit
+      - name: Recheck exactly the two previous TIMEOUT conditions
         shell: bash
         run: |
-          mkdir -p evidence/atlas-history
+          mkdir -p evidence/atlas-history-pr17-followup
           set +e
-          node repro/atlas-history/run.cjs evidence/atlas-history > evidence/atlas-history/stdout.txt 2> evidence/atlas-history/stderr.txt
+          node repro/atlas-history/run.cjs evidence/atlas-history-pr17-followup --only-pr17-timeouts > evidence/atlas-history-pr17-followup/stdout.txt 2> evidence/atlas-history-pr17-followup/stderr.txt
           code=$?
-          printf '%s\n' "$code" > evidence/atlas-history/exit.txt
-          cat evidence/atlas-history/stdout.txt
-          cat evidence/atlas-history/stderr.txt >&2
+          printf '%s\n' "$code" > evidence/atlas-history-pr17-followup/exit.txt
+          cat evidence/atlas-history-pr17-followup/stdout.txt
+          cat evidence/atlas-history-pr17-followup/stderr.txt >&2
           exit "$code"
-      - name: Preserve original comparison outputs
+      - name: Preserve separate follow-up outputs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: atlas-history-playwright-${{ matrix.playwright }}
-          path: evidence/atlas-history/
-          if-no-files-found: warn
+          name: atlas-history-pr17-followup-${{ github.run_id }}
+          path: evidence/atlas-history-pr17-followup/
+          if-no-files-found: error
           retention-days: 7
