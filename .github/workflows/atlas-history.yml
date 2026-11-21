@@ -1,0 +1,62 @@
+name: Atlas WebKit history reload diagnostic
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+    paths:
+      - 'repro/atlas-history/**'
+      - '.github/workflows/atlas-history.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  history-compare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        playwright: ['1.56.1', '1.57.0']
+    steps:
+      - name: Checkout lab diagnostic
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Checkout old Atlas (fixed HEAD)
+        uses: actions/checkout@v4
+        with:
+          repository: tetsujisugimori-coder/historical-source-atlas
+          ref: 3e56d13d77048d056e79c6971e6e7d24ad92b4ff
+          path: atlas-old
+      - name: Checkout current Atlas (fixed HEAD)
+        uses: actions/checkout@v4
+        with:
+          repository: tetsujisugimori-coder/historical-source-atlas
+          ref: 4fc74a0b6a531397914b16d8d38768ac8107803c
+          path: atlas-current
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install Playwright version and matching engines
+        run: |
+          npm install --no-save --ignore-scripts --package-lock=false --prefix repro/atlas-history playwright@${{ matrix.playwright }}
+          ./repro/atlas-history/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Run bounded comparison (crashes are diagnostic observations)
+        shell: bash
+        run: |
+          mkdir -p evidence/atlas-history
+          set +e
+          node repro/atlas-history/run.cjs evidence/atlas-history > evidence/atlas-history/stdout.txt 2> evidence/atlas-history/stderr.txt
+          code=$?
+          printf '%s\n' "$code" > evidence/atlas-history/exit.txt
+          cat evidence/atlas-history/stdout.txt
+          cat evidence/atlas-history/stderr.txt >&2
+          exit "$code"
+      - name: Preserve original comparison outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-history-playwright-${{ matrix.playwright }}
+          path: evidence/atlas-history/
+          if-no-files-found: warn
+          retention-days: 7
