@@ -2,12 +2,12 @@
 
 ## 最新判定（2026-11-22、PR #17 P3-01 文書修正）
 
-**判定器P2 CLOSED／診断器の限定受入PASS／WebKit不具合は未解決／根本原因UNKNOWN／Draft維持／マージ推奨NO（文書修正後の再確認待ち）。**
+**判定器P2 CLOSED／P3-01 CLOSED／診断器の限定受入PASS／限定マージ推奨YES（独立再審査結果）／WebKit不具合は未解決／根本原因UNKNOWN。**
 
 - [正式CI #44900524279](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/actions/runs/44900524279)：固定実装HEAD `0b68f818d12b2fa0432c159b8a8571ee51aebd91` の判定器模擬試験は **9 PASS／0 FAIL／0 skip**。750msの観測窓内に届く遅延`page.crash`を最終CRASHへ反映する模擬検証はPASS。**実ブラウザでの遅延クラッシュ通知捕捉はNOT_TESTED**。
-- 同runの限定再検査はPlaywright 1.56.1、WebKit、旧Atlasの該当2試行だけを実行し、**2 TIMEOUT**。最終C05再読込ではHTTP 200を確認したが、本文完了・`load`・`page.crash`・予期しないブラウザ切断は未観測。コンテキスト閉鎖後に発生した`http.body.error`を通信障害の原因とは断定しない。[新原票 artifact #14706355591](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/actions/runs/44900524279/artifacts/14706355591)
+- 同runの限定再検査はPlaywright 1.56.1、WebKit、旧Atlasの該当2試行だけを実行し、**2 TIMEOUT**。最終C05再読込ではHTTP 200を確認したが、本文完了・`load`・`page.crash`・予期しないブラウザ切断は未観測。コンテキストの閉鎖処理中、ページが閉じた後に記録された`http.body.error`を通信障害の原因とは断定しない。[新原票 artifact #14706355591](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/actions/runs/44900524279/artifacts/14706355591)
 - [初回正式CI #44890958138](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/actions/runs/44890958138)：旧32原票は独立した2つのZIPで保管し、アップロード当初のSHA-256と再取得した実物が一致。Playwright 1.56.1はChromium 8 PASS／WebKit 6 PASS・2 TIMEOUT、1.57.0は両エンジン各8 PASS。**旧TIMEOUTは書き換えない**。
-- [独立再審査](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/17#pullrequestreview-6008561332)は固定HEAD `0b68f818` のP2 CLOSED、診断器限定受入PASSを確認。P3-01は「文書中の旧PENDING表示」の修正指摘。今回この文書を更新したが、**P3-01の独立再確認は未実施**。WebKit現象の根本原因とDebianのクラッシュとの同一性はUNKNOWN。
+- [独立再審査](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/17#pullrequestreview-6008561332)は固定HEAD `0b68f818` のP2 CLOSED、診断器限定受入PASSを確認。P3-01は「文書中の旧PENDING表示」の修正指摘。修正済みの固定HEAD `6ffb53d706caa913c1898c5633d4acf295c0e399` の再審査報告で **P3-01 CLOSED／限定マージ推奨YES**。WebKit現象の根本原因とDebianのクラッシュとの同一性はUNKNOWN。
 
 以下の初回計画・2026-11-21のPENDING表記は、上記の最新判定より前の履歴です。
 
