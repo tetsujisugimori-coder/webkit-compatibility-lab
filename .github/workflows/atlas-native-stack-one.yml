@@ -1,0 +1,70 @@
+name: Atlas r2215 one-case native WebProcess stack
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'repro/webkit-native-stack/**'
+      - '.github/workflows/atlas-native-stack-one.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  one-native-stack:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact lab PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Checkout original Atlas fixed HEAD
+        uses: actions/checkout@v4
+        with:
+          repository: tetsujisugimori-coder/historical-source-atlas
+          ref: 3e56d13d77048d056e79c6971e6e7d24ad92b4ff
+          path: atlas-old
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install gdb and original Playwright driver/browser only
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.native-one/browsers
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y gdb procps
+          mkdir -p .native-one/driver
+          npm install --no-save --ignore-scripts --package-lock=false --prefix .native-one/driver playwright@1.56.1
+          .native-one/driver/node_modules/.bin/playwright install --with-deps webkit
+          test -x .native-one/browsers/webkit-2215/pw_run.sh
+          node --check repro/webkit-native-stack/atlas-one.cjs
+          gdb --version | head -n 1
+          printf 'ptrace_scope='; cat /proc/sys/kernel/yama/ptrace_scope || true
+      - name: Single Atlas case with attached gdb on WebProcess
+        shell: bash
+        env:
+          DEBUG: pw:browser
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.native-one/browsers
+        run: |
+          mkdir -p evidence/atlas-native-one
+          # No core dumps, full browser source rebuild, extra attempts, or unbounded wait.
+          ulimit -c 0
+          set +e
+          timeout --signal=TERM --kill-after=5s 180s node repro/webkit-native-stack/atlas-one.cjs evidence/atlas-native-one \
+            > evidence/atlas-native-one/stdout.txt 2> evidence/atlas-native-one/stderr.txt
+          code=$?
+          printf '%s\n' "$code" > evidence/atlas-native-one/exit.txt
+          cat evidence/atlas-native-one/stdout.txt
+          tail -n 60 evidence/atlas-native-one/stderr.txt >&2
+          if test -f evidence/atlas-native-one/gdb-backtrace.txt; then
+            grep -E 'Attaching to process|received signal|SIGABRT|Navigation::initializeForNewWindow|No debugging symbols|ptrace|Operation not permitted' \
+              evidence/atlas-native-one/gdb-backtrace.txt | head -n 60 || true
+          fi
+          exit "$code"
+      - name: Preserve one-case JSON and native stack text
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-r2215-native-one-${{ github.run_id }}
+          path: evidence/atlas-native-one/
+          if-no-files-found: error
+          retention-days: 7
