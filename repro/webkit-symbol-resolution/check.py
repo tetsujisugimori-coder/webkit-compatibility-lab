@@ -77,7 +77,7 @@ for frame,pc in FRAMES.items():
       "addr2line":line[:2],
       "nearest_lower_dynamic_export":nearest[1] if nearest else None,
       "distance_from_export":distance,
-      "function_confirmed":bool(line and line[0]!="??"),
+      "function_confirmed":False, # addr2line returns the nearest dynamic export even without DWARF; do NOT claim confirmed!
     })
 (OUT/"elf-notes.txt").write_text(notes["stdout"],encoding="utf-8")
 (OUT/"elf-sections.txt").write_text(run(["readelf","-SW",str(LIB)])["stdout"],encoding="utf-8")
@@ -118,6 +118,18 @@ if bld:
                 else:
                     record["rejected_reason"]="Build-ID mismatch or missing .debug_info"
                 dest.unlink(missing_ok=True)  # Avoid preserving huge unrelated/debug files.
+# Expose relevant assertion source strings from the exact ELF rather than
+# trusting a far-away nearest dynamic export as a function name.
+for name,start,stop in (
+    ("assertion-file-and-expression", "0x5c615c0", "0x5c61750"),
+    ("assertion-function-string", "0x5c77ac0", "0x5c77c80"),
+    ("adjacent-assertion-string", "0x61897e0", "0x61899e0"),
+):
+    dump=run(["objdump","-s","-j",".rodata","--start-address="+start,
+              "--stop-address="+stop,str(LIB)],timeout=20)
+    (OUT/(name+".txt")).write_text(dump["stdout"]+"\\n"+dump["stderr"],encoding="utf-8")
+report["symbol_name_policy"]="Without matching .debug_info/.symtab or explicit symbol size, addr2line nearest export is NOT a verified function for these PCs."
+
 if not report["external_symbol_matched"]:
     report["final_attribution"]="BINARY_UNSYMBOLIZED"
 (OUT/"report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
