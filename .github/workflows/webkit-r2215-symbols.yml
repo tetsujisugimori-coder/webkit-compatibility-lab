@@ -1,0 +1,54 @@
+name: WebKit r2215 exact ELF symbols lookup
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'repro/webkit-symbol-resolution/**'
+      - '.github/workflows/webkit-r2215-symbols.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect-r2215:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 14
+    steps:
+      - name: Checkout exact investigation HEAD
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Download pinned original WebKit r2215 distribution (no browser run)
+        shell: bash
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.symbol-retrieval/browsers
+        run: |
+          mkdir -p .symbol-retrieval/driver
+          npm install --no-save --ignore-scripts --package-lock=false --prefix .symbol-retrieval/driver playwright@1.56.1
+          .symbol-retrieval/driver/node_modules/.bin/playwright install webkit
+          test -f .symbol-retrieval/browsers/webkit-2215/minibrowser-wpe/lib/libWPEWebKit-2.0.so.1.7.0
+          readelf --version | head -n 1
+      - name: ELF identity and bounded matching-symbol retrieval
+        shell: bash
+        env:
+          WEBKIT_ELF: ${{ github.workspace }}/.symbol-retrieval/browsers/webkit-2215/minibrowser-wpe/lib/libWPEWebKit-2.0.so.1.7.0
+          SYMBOL_REPORT_DIR: ${{ github.workspace }}/evidence/r2215-symbols
+        run: |
+          mkdir -p evidence/r2215-symbols
+          set +e
+          python3 repro/webkit-symbol-resolution/check.py > evidence/r2215-symbols/stdout.txt 2> evidence/r2215-symbols/stderr.txt
+          code=$?
+          printf '%s\n' "$code" > evidence/r2215-symbols/exit.txt
+          cat evidence/r2215-symbols/stdout.txt
+          cat evidence/r2215-symbols/stderr.txt >&2
+          exit "$code"
+      - name: Preserve compact identity and symbolization reports only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: webkit-r2215-symbol-lookup-${{ github.run_id }}
+          path: evidence/r2215-symbols/
+          if-no-files-found: error
+          retention-days: 7
