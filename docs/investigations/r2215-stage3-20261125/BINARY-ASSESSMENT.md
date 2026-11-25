@@ -5,19 +5,19 @@
 - PR #20 WebProcess PID 5817 / GDB Thread 1 LWP 5817 / SIGABRT(6)。ブラウザstderr optional:479 / this->_M_is_engaged()。WebKitフレーム #6 = 0x7f41fc5208ae。
 - GDB maps のRX開始 0x7f41f87d0000、ファイルオフセット 0x7d0000 から算出したロードベース 0x7f41f8000000。フレーム #6 をELF VMAへ変換すると0x45208ae。
 - PR #21報告: 0x45208a9に std::__glibcxx_assert_fail 呼出し、0x45208aeが復帰PC。型 unsigned long を含む optional 内部assertion文字列と一致。配布ELFに.symtab/.debug_info/.gnu_debuglink/.gnu_debugdataなし。
-- 追加readelfの報告FDE: 0x4520120 <= PC < 0x45208d2。
+- 追加readelfの報告FDE: 0x4520120 <= PC < 0x45208d2。独立レビューでE20/E21に生出力は見つからず、対象ELF識別情報と結び付いたreadelf原出力は未取得。報告値としてのみ扱う。
 
 ## 今回の検証と限界
 - 算術検査: 0x4520120 < 0x45208a9 < 0x45208ae < 0x45208d2。**報告されたFDEとassertion呼出し/復帰PCの範囲整合はCONFIRMED（算術のみ）**。
 - VMA計算とC++ optional文字列の関連: 既存PRの技術資料および正式CI/artifact存在・SHAからSTRONGLY_SUPPORTED。今回ELF生バイト/objdump実出力は再取得していない。
 - FDEはunwind情報の範囲を示すが、ソース上の厳密な関数名やテンプレート展開元を単独では明かさない。特に近傍の公開動的シンボルを帰属根拠にしない。
-- std::optional<unsigned long> は索引用size_t等と整合するが、previousNavigation側・現在側のどちらかは判定不能。NavigationNavigationType optionalの別検査とは型を区別すべき。
+- std::optional<unsigned long> は索引用size_t等の可能性があるが対象変数はUNKNOWN。#301593の開発者説明はcurrentEntry()が返すnullptrの参照による停止（HYPOTHESIS）で、Atlasの空optionalへのアクセスとは異なる直接機構。両固定版のcurrentEntry()は索引有無を検査する。
 - #300402はWebKitGTKのシンボル付き別ビルド、こちらはWPE r2215。OS/ライブラリ/Build IDが異なる。類似スタックは仮説の補助であって実配布PCの証明でない。
 - PR #20の実行時バイナリのSHA/Build ID原票が無く、PR #21の後日取得ELFとの完全なバイト一致はUNKNOWN。
 - 対応する同一Build IDのDWARF未取得、実関数帰属はBLOCKED。新規readelf・逆アセンブル・GDB・実ブラウザ実行は今回はNOT_TESTED。
 
 ## 関数帰属の評価
-公開ソースにinitializeForNewWindowの optional index参照の危険経路があり、Bug #300402には同関数の署名付きスタックがある。一方今回のWPEスタックでは該当WebKitフレーム名は??。従って「同関数である」という記述はHYPOTHESISまでで、CONFIRMEDもSTRONGLY_SUPPORTEDも不可。関数責務と症状は整合するが、他の呼出し元も排除できない。
+公開ソースにinitializeForNewWindowの optional index参照の危険経路があり、Bug #300402には同関数の署名付きスタックがある。一方今回のWPEスタックでは該当WebKitフレーム名は??。従って「同関数である」という記述はHYPOTHESISまでで、CONFIRMEDもSTRONGLY_SUPPORTEDも不可。関数は比較対象候補にすぎず、帰属はUNKNOWN。r2215上流の該当previousWindow引継ぎはサブフレーム限定（previousWindow && !frame()->isMainFrame()）。Atlasの操作は主フレームを対象とするが、停止フレームは既存スタックで不明。当該経路への到達と旧配布物の分岐条件はUNKNOWNであり、主フレームでの到達を推定しない。
 
 ## 正確な証拠の入口
 - PR #20 https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/20

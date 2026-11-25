@@ -10,16 +10,16 @@
 | Push | previous index後をshrink | 同趣旨 | 確認済 |
 | Replace | previousEntryを保持、場合によりentry置換、current indexを探索 | 同趣旨。ただしnavigationType ASSERTなど差あり | 確認済 |
 | Reload/その他 else | index探索後、navigationTypeがあれば currentEntry() を参照 | index探索後、ASSERT(navigationType)を経て currentEntry() を参照 | 両方に未設定を見落とす可能性 |
-| 通常経路のentries | pageのback/forward列をorigin条件で収集し現在itemを探す | currentItemを単独appendしindex=0相当 | 重要な構造差 CONFIRMED |
+| 通常経路のentries | pageのback/forward列をorigin条件で収集し現在itemを探す | currentItemを末尾にappendしindex=m_entries.size() - 1（0とは限らない） | 重要な構造差 CONFIRMED |
 | Activation関数 | updateForActivation | setActivation | 298765@mainで変更 |
 | BFCache復帰 | updateForReactivationは既存構成 | 298765@mainでpreviousItemによるActivation更新・navigateイベント遅延などを追加 | 単なる改名ではない |
 
 制御フロー（高水準、実行アドレスとは未対応）:
 1. initializeForNewWindowへ navigationType と previousWindow が渡る。
 2. entryイベントが無効ならreturn。frame/page/currentItemがなければreturn。
-3. previousWindowと条件により以前のentriesをコピーして索引を参照。ここで **previousNavigation->m_currentEntryIndex** が空なら、size/entry/index参照が失敗し得る。
+3. previousWindowと条件により以前のentriesをコピーして索引を参照。r2215上流ではこの分岐はサブフレーム限定。Atlas操作は主フレームだが停止フレームは不明であり、実配布物の条件・到達はUNKNOWN。ここで **previousNavigation->m_currentEntryIndex** が空なら、size/entry/index参照が失敗し得る。
 4. Traverse/Push/Replace/その他の分岐。その他の分岐では現在のm_entriesからcurrentItemの一致を探索する。見つからなければ **現在のm_currentEntryIndex** が空。
-5. 見つからないままcurrentEntry()やoptional値を使う部分に不整合がある。
+5. currentEntry()は両固定版で索引の有無を検査し、欠落時はnullptrを返す。戻り値の参照と空optionalの直接アクセスは別の停止機構であり、Atlasの署名との同一性はUNKNOWN。
 6. 通常経路へ移る場合も、r2215とr2227でエントリ生成ロジックが異なる。実配布ELFの最終動作は上流基準点だけでは確定できない。
 
 ## 298765@main（2025-08-15）
