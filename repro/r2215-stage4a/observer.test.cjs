@@ -56,6 +56,26 @@ test('snapshot success and exception are recorded independently', async () => {
   page.evaluate = () => {throw new Error('closed');};
   assert.equal((await observer.snapshot(page, 'later')).status, 'ERROR');
 });
+test('null and undefined read errors preserve other fields and release the snapshot', async () => {
+  const {observer, page} = fake();
+  for (const thrown of [null, undefined]) {
+    const state = readPublicState({
+      history: {length: 2},
+      navigation: {get currentEntry() {throw thrown;}},
+    });
+    assert.deepEqual(state.historyLength, {status: 'OK', value: 2});
+    assert.deepEqual(state.currentEntry, {status: 'ERROR', message: String(thrown)});
+
+    page.evaluate = async () => {throw thrown;};
+    const result = {status: 'ERROR', message: String(thrown)};
+    assert.deepEqual(await observer.snapshot(page, 'read failure'), result);
+    const last = observer.report().at(-1);
+    assert.equal(last.type, 'snapshot.end');
+    assert.deepEqual(last.details, {label: 'read failure', ...result});
+  }
+  page.evaluate = fn => fn({history: {length: 3}});
+  assert.equal((await observer.snapshot(page, 'next')).value.historyLength.value, 3);
+});
 test('snapshot timeout stops further snapshots; late completion cannot append', async () => {
   const {observer, page} = fake();
   let complete;
@@ -76,6 +96,28 @@ test('page crash, process signal and cleanup disconnect stay separate', () => {
   assert.deepEqual(events.map(e => e.cleanup), [false,false,true,true,true]);
   assert.throws(() => observer.processExit({signal: 'SIGABRT'}), /missing/);
   observer.dispose(); page.emit('crash'); assert.equal(observer.report().length, 5);
+});
+test('process exit requires exactly one usable exit code or signal', () => {
+  const {observer} = fake();
+  const exit = {pid: 123, source: 'synthetic'};
+  for (const details of [
+    {},
+    {signal: ''},
+    {signal: '   '},
+    {code: 0, signal: 'SIGABRT'},
+    {code: 'bad', signal: 'SIGABRT'},
+    {code: 0, signal: false},
+    {code: 0, source: '   '},
+  ]) {
+    assert.throws(() => observer.processExit({...exit, ...details}), /missing/);
+  }
+  assert.deepEqual(observer.report(), []);
+  observer.processExit({...exit, code: 0, signal: null});
+  observer.processExit({...exit, code: null, signal: 'SIGABRT'});
+  assert.deepEqual(observer.report().map(event => event.details), [
+    {...exit, code: 0, signal: null},
+    {...exit, code: null, signal: 'SIGABRT'},
+  ]);
 });
 test('public event is labeled page-reported; report is detached', () => {
   const {observer} = fake();
@@ -105,4 +147,40 @@ test('public event adapter installs future-document listeners and labels frames'
   assert.deepEqual(events.map(e => e.details.frame), ['main', 'main', 'subframe']);
   assert.deepEqual(events.map(e => e.details.documentSeq), [1, 2, 1]);
   assert.equal(events[0].details.timeOriginMs, 123);
+});
+test('public events keep frame and document identity across matching timestamps and reloads', async () => {
+  const {observer, page} = fake();
+  const main = {}, firstFrame = {}, secondFrame = {};
+  let binding, install;
+  page.mainFrame = () => main;
+  page.exposeBinding = async (_, fn) => {binding = fn;};
+  page.addInitScript = async fn => {install = fn;};
+  await installPublicEventAdapter(page, observer);
+
+  const startDocument = (frame, entropy) => {
+    const listeners = new Map();
+    install({
+      addEventListener: (type, handler) => listeners.set(type, handler),
+      crypto: {getRandomValues: words => words.fill(entropy)},
+      performance: {timeOrigin: 123},
+      __stage4aReport: details => binding({frame}, details),
+    });
+    return () => listeners.get('pageshow')({type: 'pageshow', timeStamp: 4});
+  };
+  const firstDocument = startDocument(firstFrame, 1);
+  firstDocument();
+  startDocument(secondFrame, 2)();
+  startDocument(firstFrame, 3)();
+  firstDocument();
+
+  const [first, second, reloaded, late] = observer.report().map(event => event.details);
+  assert.deepEqual([first, second, reloaded, late].map(event => event.frame), Array(4).fill('subframe'));
+  assert.deepEqual([first, second, reloaded, late].map(event => event.documentSeq), [1, 1, 1, 2]);
+  assert.ok([first, second, reloaded, late].every(event => event.timeOriginMs === 123 && event.documentTimeMs === 4));
+  assert.ok([first, second, reloaded, late].every(event => event.documentId));
+  assert.notEqual(first.frameId, second.frameId);
+  assert.equal(first.frameId, reloaded.frameId);
+  assert.equal(first.frameId, late.frameId);
+  assert.equal(new Set([first.documentId, second.documentId, reloaded.documentId]).size, 3);
+  assert.equal(first.documentId, late.documentId);
 });
