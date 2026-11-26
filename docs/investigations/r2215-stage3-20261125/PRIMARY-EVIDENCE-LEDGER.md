@@ -31,9 +31,13 @@
 - PR #20 GDBが実行したELFとPR #21で後日取得したELFが同じ配布revisionであることは報告されているが、実行時のBuild ID/SHAが原票にない。厳密なbyte同一性UNKNOWN。
 - Level 2保全候補: 本調査文書・一次資料照合記録・新規差分表。保存実体は本PRのGit blob。本人限定Libraryなど所定の保全先への独立保存は本作業では実施していない。中央保全規約による最終保全認定は別途必要。
 
-## 2026-11-26 独立レビュー・保全確認（現行）
+## 2026-11-26 独立レビュー・保存担当による保全確認（再審査前の記録）
 - [独立レビュー](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/22#pullrequestreview-6060401704) でActions E19/E20/E21の全25収録ファイルのCRCと3 ZIPのサイズ・SHA-256一致を確認。FDE生出力はE20/E21に見つからず、対象ELF識別情報との対応は未証明。
 - 本人限定Driveの既存保全先でE19/E20の実体・ownerのみの権限を確認し、今回生バイトを再取得。上表のサイズ・SHA-256と一致、CRC正常。
 - E21はActionsから生ZIP取得し上表のサイズ・SHA-256一致、CRC正常を確認。同じ本人限定Drive保全先へ新規保存し、ownerのみの権限と保存先からの再取得・サイズ・SHA-256・CRC一致を確認。新規保存担当自身による読戻しであり、独立担当の保存先再取得はPENDING。
 - Libraryに3件の登録・サイズ一致を確認したが生バイト取得はBLOCKED。Drive/Libraryの非公開識別子や取得URLは公開GitHubに記載しない。保持期限1年、削除・移動・上書き禁止。正式な中央規約適合の最終判定は独立再審査で確認する。
 - Actions失効予定（JST）E19 2026-11-29 08:18:36、E20 15:10:09、E21 16:02:22。既存保全先のファイルは削除・移動・上書きしていない。
+
+## 2026-11-26 保存先からの独立再取得（現行）
+- [独立再審査](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/22#pullrequestreview-6061365008)では、別担当がE19/E20/E21の原ZIPを本人限定Driveから再取得した。取得時点で権限は所有者のみ。3件のサイズ・SHA-256はActions記録と一致し、全25収録ファイルのCRCが正常。原ZIP3件の保全照合はPASS。
+- 保持期間の経過後の実在性とLibrary経由のZIP実体照合は当該再審査の範囲外。上記のE21独立再取得PENDINGは再審査前の状態。

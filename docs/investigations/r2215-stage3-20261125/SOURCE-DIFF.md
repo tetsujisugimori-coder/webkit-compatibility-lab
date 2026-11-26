@@ -16,7 +16,7 @@
 
 制御フロー（高水準、実行アドレスとは未対応）:
 1. initializeForNewWindowへ navigationType と previousWindow が渡る。
-2. entryイベントが無効ならreturn。frame/page/currentItemがなければreturn。
+2. 両固定版とも、履歴エントリとイベントが無効なら早期終了する。次に `frame()` から `page` を取得し、`page` がなければ早期終了する。続いて `frame()` の履歴から `currentItem` を取得し、`currentItem` がなければ早期終了する。
 3. previousWindowと条件により以前のentriesをコピーして索引を参照。r2215上流ではこの分岐はサブフレーム限定。Atlas操作は主フレームだが停止フレームは不明であり、実配布物の条件・到達はUNKNOWN。ここで **previousNavigation->m_currentEntryIndex** が空なら、size/entry/index参照が失敗し得る。
 4. Traverse/Push/Replace/その他の分岐。その他の分岐では現在のm_entriesからcurrentItemの一致を探索する。見つからなければ **現在のm_currentEntryIndex** が空。
 5. currentEntry()は両固定版で索引の有無を検査し、欠落時はnullptrを返す。戻り値の参照と空optionalの直接アクセスは別の停止機構であり、Atlasの署名との同一性はUNKNOWN。

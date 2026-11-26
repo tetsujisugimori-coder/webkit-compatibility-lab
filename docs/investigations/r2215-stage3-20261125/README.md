@@ -4,13 +4,14 @@
 - 親課題: https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/issues/18
 - 既存PR: #19, #20, #21（作業開始時いずれも OPEN / Draft、指定HEAD一致）
 - 実装元main: a9d077312571b5c11aea86a07492541a831d10de（tree 83cdfa005f4f562e39751fb19b41932201cb81b2）
-- 現行総合判定: **PARTIAL / 文書限定受入HOLD（P2/P3修正済・独立再審査待ち） / 関数帰属・初発原因UNKNOWN / 新規実機検証NOT_TESTED / Draft維持・マージNO**
+- 現行判定（2026-11-26 JST）: **総合PARTIAL / 文書限定受入PASS / PR #22マージ済み / 根本原因・r2227非再現の因果帰属UNKNOWN / 新規実機検証NOT_TESTED**。[独立再審査](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/22#pullrequestreview-6061365008)・[マージ記録](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/issues/18#issuecomment-7191771478)。
+- [PR #22](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/22) の審査対象HEADでの旧判定（独立再審査前）: **総合PARTIAL / 文書限定受入HOLD / Draft維持・マージNO**。
 - 本報告は既存の調査を修正せずに追補するもの。2026-11-26追補: [独立レビュー](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/22#pullrequestreview-6060401704) のP2/P3全5件に対応。旧版はGit履歴に保持。Actions原票の独立再取得はレビュー担当が実施し、今回は保存先からの再取得照合を実施した。
 
 ## A. 結論
 Playwright 1.56.1ドライバー固定の既存14条件では、WebKit r2215が4 PASS/3 TIMEOUT、r2227が7 PASS。r2215のTIMEOUTにC++ optional assertionが同時記録され、別途PR #20が実WPEWebProcessのSIGABRTを直接取得した。これらはWebKitビルド差の影響を強く支持する。ただしPlaywrightのTIMEOUTをCRASHへ書き換えてはならず、r2227での非再現がどのパッチに起因するかは不明である。
 
-既存PR #21のGDB-PC/ELF整合は明確だが、同Build IDのDWARFなしにWebKit内部関数を厳密帰属できない。追加readelfのFDE範囲は報告値の算術検査のみ実施。FDE生出力と当該出力のELF識別情報は未取得。実行時ELFと後取得ELFの同一性はUNKNOWN。r2215上流のpreviousWindow履歴引継ぎ分岐はサブフレーム限定。Atlas操作対象は主フレームだが異常発生フレームは未特定で、当該分岐への到達と実配布物の分岐条件はUNKNOWN。独立再審査待ち。
+既存PR #21のGDB-PC/ELF整合は明確だが、同Build IDのDWARFなしにWebKit内部関数を厳密帰属できない。追加readelfのFDE範囲は報告値の算術検査のみ実施。FDE生出力と当該出力のELF識別情報は未取得。実行時ELFと後取得ELFの同一性はUNKNOWN。r2215上流のpreviousWindow履歴引継ぎ分岐はサブフレーム限定。Atlas操作対象は主フレームだが異常発生フレームは未特定で、当該分岐への到達と実配布物の分岐条件はUNKNOWN。
 
 ## B. 版と適用範囲
 - PR #19 HEAD 86c6dad45f4635ab5618f7bd64f6c00e1888601f
@@ -37,7 +38,7 @@ Playwright 1.56.1ドライバー固定の既存14条件では、WebKit r2215が4
 詳細は [FINDINGS.md](FINDINGS.md)。各項目を独立に判定し、根本原因と回避後の非再現を混同しない。
 
 ## H. 証拠保全
-[PRIMARY-EVIDENCE-LEDGER.md](PRIMARY-EVIDENCE-LEDGER.md)に公開ソースのURL・固定版・取得区分、既存Actions原票のIDとSHA-256を記録。初回調査ではメタデータのみ取得。2026-11-26独立レビューでActions原ZIP3件のサイズ・SHA-256・CRC一致を確認。今回、本人限定Driveに既存保存されたE19/E20を再取得し一致、E21を新規保存し同じ保存先から再取得して一致。保存先からのE21独立担当による再照合はPENDING。Libraryの生バイト取得はBLOCKED。新規の研究文書はGitの固定treeとblob SHAを残す。中央保全規約 v0.2.0に基づき、既存原票は既存保全記録の区分を継承し、新規調査台帳・根拠はLevel 2相当の保存対象として扱う（正式保存先への別途実物保存を行ったとは主張しない）。削除・移動・上書きは別承認、既存証拠保持1年。
+[PRIMARY-EVIDENCE-LEDGER.md](PRIMARY-EVIDENCE-LEDGER.md)に公開ソースのURL・固定版・取得区分、既存Actions原票のIDとSHA-256を記録。初回調査ではメタデータのみ取得。2026-11-26独立レビューでActions原ZIP3件のサイズ・SHA-256・CRC一致を確認。今回、本人限定Driveに既存保存されたE19/E20を再取得し一致、E21を新規保存し同じ保存先から再取得して一致。その後の[独立再審査](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/22#pullrequestreview-6061365008)では、別担当が本人限定DriveからE19/E20/E21の3件を再取得し、サイズ・SHA-256一致と全25収録ファイルのCRC正常を確認した。Libraryの生バイト取得はBLOCKED。新規の研究文書はGitの固定treeとblob SHAを残す。中央保全規約 v0.2.0に基づき、既存原票は既存保全記録の区分を継承し、新規調査台帳・根拠はLevel 2相当の保存対象として扱う（正式保存先への別途実物保存を行ったとは主張しない）。削除・移動・上書きは別承認、既存証拠保持1年。
 
 ## I. 追加実機検証
 **文書受入の追加実機検証は不要。研究上の追加観測は条件付き候補、開始NO（NOT_TESTED）**。公開APIの可視状態と停止時系列に研究価値がある場合に限り再判断する。内部索引・関数・パッチの因果帰属は実機計画だけでは確定できない。旧Atlas代表1条件に限定した設計は [LIMITED-EXPERIMENT-PLAN.md](LIMITED-EXPERIMENT-PLAN.md)。所有者の別途承認なしに実行しない。
@@ -45,11 +46,14 @@ Playwright 1.56.1ドライバー固定の既存14条件では、WebKit r2215が4
 ## J. UNKNOWN / BLOCKED
 元GDB ELFと後取得ELFのバイト一致、内部関数帰属、空のindexの主語、indexが失われた初発時点、r2227配布実体のパッチ採用、#53102の因果効果、Playwright独自パッチの因果効果はUNKNOWN。同Build ID一致DWARFの調達と再帰属はBLOCKED。別Build IDのスタック流用は禁止。
 
-## K. 推奨する次工程
+## K. 次工程
+[独立再審査](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/22#pullrequestreview-6061365008)で前回の5件はCLOSEDとなり、E21を含む3件の保全照合はPASSとなった。非阻害のP3-04は [SOURCE-DIFF.md](SOURCE-DIFF.md) の制御フロー2を補訂した。新規実機の要否はセクションIの条件で判断する。Issue #18は継続。
+
+### 審査前の計画（履歴）
 1. 別担当が修正後の固定HEADについてP2/P3全5件を独立再審査。
 2. E21の保存先からの独立再取得・中央規約の保全条件を確認。
 3. 文書限定受入を再判定し、追加実機検証は公開API状態・時系列の研究価値がある場合だけ別承認で判断。
 4. 実配布r2227のパッチ実装帰属は正規ビルド記録が得られない限りBLOCKEDのまま収束させる。
 
 ## L. GitHub記録と権限
-この文書群は本PRの成果であり、Issue #18に初回結果投稿済み。今回の補訂版は独立再審査待ち。最新HEADのCIと投稿後のreadbackは提出後に確認する。Draft維持、マージ・本番・Atlas・診断器・HOLD変更なし。独立レビュー依頼は [INDEPENDENT-REVIEW.md](INDEPENDENT-REVIEW.md)。
+[PR #22](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/pull/22) の文書限定受入とマージは [Issue #18の追補](https://github.com/tetsujisugimori-coder/webkit-compatibility-lab/issues/18#issuecomment-7191771478) に記録済み。審査済みHEADの正式CIは未実施。提出当時の独立レビュー依頼は [INDEPENDENT-REVIEW.md](INDEPENDENT-REVIEW.md) に保持する。
