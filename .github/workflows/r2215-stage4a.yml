@@ -1,0 +1,25 @@
+name: r2215 stage 4-A synthetic observer tests
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'repro/r2215-stage4a/**'
+      - '.github/workflows/r2215-stage4a.yml'
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [main]
+    paths:
+      - 'repro/r2215-stage4a/**'
+      - '.github/workflows/r2215-stage4a.yml'
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node --test repro/r2215-stage4a/observer.test.cjs
