@@ -86,15 +86,30 @@ function validated(options) {
 async function runCase(variant, binding, stopAt, deadlineReason, cleanupMs) {
   const started = performance.now();
   const row = {...binding, variant, attempt: 1, receipts: [], status: 'INCOMPLETE', stop: 'UNOBSERVED',
-    worker: {threadId: null, exitCode: null, cleanup: 'NOT_NEEDED', error: null},
+    worker: {threadId: null, exitCode: null, startup: 'UNOBSERVED', onlineObserved: false,
+      cleanup: 'NOT_NEEDED', cleanupError: null, error: null},
     stdout: '', stderr: '', streamsEncoding: 'base64', streamsTruncated: false};
   const buffers = {stdout: Buffer.alloc(0), stderr: Buffer.alloc(0)};
-  const worker = new Worker(join(__dirname, 'fixture.cjs'), {
-    workerData: {...binding, variant}, stdout: true, stderr: true, execArgv: [], env: {},
-    resourceLimits: {maxOldGenerationSizeMb: 16, maxYoungGenerationSizeMb: 4},
-  });
+  let receiving = true;
+  let worker;
+  try {
+    worker = new Worker(join(__dirname, 'fixture.cjs'), {
+      workerData: {...binding, variant}, stdout: true, stderr: true, execArgv: [], env: {},
+      resourceLimits: {maxOldGenerationSizeMb: 16, maxYoungGenerationSizeMb: 4},
+    });
+  } catch (error) {
+    row.worker.startup = 'CONSTRUCTOR_FAILED';
+    row.worker.error = typeof error?.message === 'string' ? error.message : 'Unreadable constructor failure';
+    row.stop = 'WORKER_START_FAILED';
+    row.evidence = correlate(row.receipts, binding);
+    row.elapsedMs = row.observationEndMs = performance.now() - started;
+    return row;
+  }
+  row.worker.startup = 'THREAD_CREATED';
   row.worker.threadId = worker.threadId;
+  worker.once('online', () => { if (receiving) row.worker.onlineObserved = true; });
   const capture = name => worker[name].on('data', data => {
+    if (!receiving) return;
     const allowed = STREAM_LIMIT - buffers[name].length;
     if (data.length > allowed) row.streamsTruncated = true;
     if (allowed > 0) buffers[name] = Buffer.concat([buffers[name], data.subarray(0, allowed)]);
@@ -112,8 +127,8 @@ async function runCase(variant, binding, stopAt, deadlineReason, cleanupMs) {
     if (row.receipts.length === LIMIT) { stop('EVENT_LIMIT'); return; }
     row.receipts.push({hostSeq: row.receipts.length + 1, receivedMs: performance.now() - started, payload: message});
   });
-  worker.once('error', error => { row.worker.error = error.message; });
-  const exit = new Promise(resolve => worker.once('exit', code => { row.worker.exitCode = code; resolve(); }));
+  worker.once('error', error => { if (receiving) row.worker.error = error.message; });
+  const exit = new Promise(resolve => worker.once('exit', code => { if (receiving) row.worker.exitCode = code; resolve(); }));
   timer = setTimeout(() => stop(deadlineReason), Math.max(0, Math.ceil(stopAt - performance.now())));
   try {
     await Promise.race([exit, stopped]);
@@ -123,14 +138,22 @@ async function runCase(variant, binding, stopAt, deadlineReason, cleanupMs) {
   if (expired && row.worker.exitCode === null) {
     let watchdog;
     try {
-      const terminate = worker.terminate().then(() => true, () => false);
+      const terminate = worker.terminate().then(() => true, error => {
+        if (receiving) row.worker.cleanupError = typeof error?.message === 'string' ?
+          error.message : 'Unreadable termination failure';
+        return false;
+      });
       const done = await Promise.race([terminate, new Promise(resolve => {
         watchdog = setTimeout(() => resolve(false), cleanupMs);
       })]);
       row.worker.cleanup = done && row.worker.exitCode !== null ? 'CONFIRMED' : 'UNCONFIRMED';
-      if (row.worker.cleanup === 'UNCONFIRMED') worker.unref();
+    } catch (error) {
+      row.worker.cleanup = 'UNCONFIRMED';
+      row.worker.cleanupError = typeof error?.message === 'string' ? error.message : 'Unreadable termination failure';
     } finally { clearTimeout(watchdog); }
+    if (row.worker.cleanup === 'UNCONFIRMED') worker.unref();
   }
+  receiving = false;
   if (!expired) row.stop = 'WORKER_EXIT';
   row.stdout = buffers.stdout.toString('base64'); row.stderr = buffers.stderr.toString('base64');
   row.evidence = correlate(row.receipts, binding);
@@ -152,13 +175,13 @@ async function runSuite(variants = VARIANTS, options = {}) {
     real: realStartGate(), environment: {node: process.version, platform: process.platform, arch: process.arch},
     cases: [], startedAt: new Date().toISOString()};
   const end = performance.now() + bounds.suiteMs;
-  let cleanupUnknown = false;
+  let blockedBy = null;
   for (const [index, variant] of variants.entries()) {
     const caseId = 'case-' + (index + 1);
     const now = performance.now();
-    if (cleanupUnknown || now >= end) {
+    if (blockedBy || now >= end) {
       report.cases.push({runId, caseId, variant, attempt: 0, status: 'NOT_TESTED',
-        stop: cleanupUnknown ? 'PRIOR_CLEANUP_UNCONFIRMED' : 'SUITE_DEADLINE'});
+        stop: blockedBy ?? 'SUITE_DEADLINE'});
       continue;
     }
     const observationEnd = now + bounds.variantMs;
@@ -171,7 +194,8 @@ async function runSuite(variants = VARIANTS, options = {}) {
         worker: {threadId: null, exitCode: null, cleanup: 'UNCONFIRMED', error: error.message}, receipts: []};
     }
     report.cases.push(row);
-    cleanupUnknown = row.worker.cleanup === 'UNCONFIRMED';
+    if (row.worker.cleanup === 'UNCONFIRMED') blockedBy = 'PRIOR_CLEANUP_UNCONFIRMED';
+    else if (row.stop === 'WORKER_START_FAILED') blockedBy = 'PRIOR_WORKER_START_FAILED';
   }
   report.finishedAt = new Date().toISOString();
   return report;
