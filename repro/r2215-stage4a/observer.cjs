@@ -33,10 +33,23 @@ function readPublicState(root = globalThis) {
 // with a real browser. The page-reported events are asynchronous observations, not ground truth.
 function installPageListeners(root = globalThis) {
   // Keep the identity in this document so even late reports retain it across navigation.
-  const documentId = root.crypto?.getRandomValues?.(new Uint32Array(4)).join('-') ?? null;
+  let documentId = null, documentIdentityStatus = 'UNSUPPORTED';
+  try {
+    const crypto = root.crypto;
+    const random = crypto?.getRandomValues;
+    if (typeof random === 'function') {
+      const words = new Uint32Array(4);
+      if (random.call(crypto, words) !== words) throw new Error('invalid RNG return');
+      documentId = words.join('-');
+      documentIdentityStatus = 'OK';
+    }
+  } catch {
+    // A failed RNG does not stop event collection and never fabricates identity.
+    documentIdentityStatus = 'ERROR';
+  }
   let seq = 0;
   const report = event => {
-    const details = {name: event.type, documentId, documentSeq: ++seq,
+    const details = {name: event.type, documentId, documentIdentityStatus, documentSeq: ++seq,
       documentTimeMs: event.timeStamp, timeOriginMs: root.performance?.timeOrigin};
     try { Promise.resolve(root.__stage4aReport(details)).catch(() => {}); } catch (_) {}
   };
@@ -135,6 +148,7 @@ function createObserver({clock = () => Number(process.hrtime.bigint()) / 1e6,
     if (!['navigate', 'navigatesuccess', 'navigateerror', 'currententrychange', 'popstate', 'hashchange', 'pageshow', 'pagehide'].includes(details?.name)) throw new Error('unknown public event');
     return record('public.event', {name: details.name, frame: details.frame ?? null,
       frameId: details.frameId ?? null, documentId: details.documentId ?? null,
+      documentIdentityStatus: details.documentIdentityStatus ?? null,
       documentTimeMs: details.documentTimeMs ?? null, documentSeq: details.documentSeq ?? null,
       timeOriginMs: details.timeOriginMs ?? null, origin: 'page-reported'});
   }
