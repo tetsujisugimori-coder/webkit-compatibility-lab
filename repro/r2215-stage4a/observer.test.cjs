@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const {EventEmitter} = require('node:events');
-const {createObserver, readPublicState, installPublicEventAdapter} = require('./observer.cjs');
+const {createObserver, readPublicState, installPublicEventAdapter, installPageListeners} = require('./observer.cjs');
 const fake = () => {
   let time = 0;
   const page = new EventEmitter(), browser = new EventEmitter();
@@ -183,4 +183,37 @@ test('public events keep frame and document identity across matching timestamps 
   assert.equal(first.frameId, late.frameId);
   assert.equal(new Set([first.documentId, second.documentId, reloaded.documentId]).size, 3);
   assert.equal(first.documentId, late.documentId);
+});
+
+
+test('RNG failures retain listeners and never synthesize a document identity', () => {
+  for (const [host, expected] of [
+    [{}, 'UNSUPPORTED'],
+    [{get crypto() { throw new Error('unavailable'); }}, 'ERROR'],
+    [{crypto: {getRandomValues() { throw undefined; }}}, 'ERROR'],
+    [{crypto: {getRandomValues: () => []}}, 'ERROR'],
+  ]) {
+    const listeners = new Map(), reports = [];
+    Object.defineProperties(host, {
+      addEventListener: {value: (type, handler) => listeners.set(type, handler)},
+      __stage4aReport: {value: details => reports.push(details)},
+    });
+    installPageListeners(host);
+    listeners.get('pageshow')({type: 'pageshow', timeStamp: 4});
+    listeners.get('pagehide')({type: 'pagehide', timeStamp: 4});
+    assert.deepEqual(reports.map(x => x.documentIdentityStatus), [expected, expected]);
+    assert.deepEqual(reports.map(x => x.documentId), [null, null]);
+    assert.deepEqual(reports.map(x => x.documentSeq), [1, 2]);
+  }
+});
+
+test('working RNG preserves receiver and identity status with original sequence', () => {
+  const listeners = new Map();
+  const reports = [];
+  const crypto = {getRandomValues(words) { assert.equal(this, crypto); return words.fill(8); }};
+  installPageListeners({crypto, addEventListener: (type, handler) => listeners.set(type, handler),
+    __stage4aReport: d => reports.push(d)});
+  listeners.get('pageshow')({type: 'pageshow', timeStamp: 1});
+  assert.equal(reports[0].documentIdentityStatus, 'OK');
+  assert.equal(reports[0].documentId, '8-8-8-8');
 });

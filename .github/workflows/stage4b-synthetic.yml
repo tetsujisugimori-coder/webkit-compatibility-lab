@@ -1,0 +1,58 @@
+name: Stage 4-B synthetic-only evidence contracts
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [main]
+    paths:
+      - 'repro/stage4b-synthetic/**'
+      - 'repro/r2215-stage4a/observer*.cjs'
+      - '.github/workflows/stage4b-synthetic.yml'
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Open unique synthetic evidence directory
+        run: |
+          mkdir -p .work
+          mkdir .work/stage4b-synthetic .work/stage4b-checks
+          git show -s --format='%H%n%T%n%P' HEAD > .work/stage4b-synthetic/commit-tree-parent.txt
+          printf '%s\n%s\n%s\n' "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" "$GITHUB_EVENT_NAME" > .work/stage4b-synthetic/ci-run.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Run synthetic and 4-A regression tests
+        run: |
+          set +e
+          TEST_SCRATCH="$PWD/.work/stage4b-checks" node --test repro/r2215-stage4a/observer.test.cjs repro/stage4b-synthetic/coordinator.test.cjs > .work/stage4b-synthetic/test.stdout 2> .work/stage4b-synthetic/test.stderr
+          code=$?
+          printf '%s\n' "$code" > .work/stage4b-synthetic/test.exit
+          cat .work/stage4b-synthetic/test.stdout
+          cat .work/stage4b-synthetic/test.stderr >&2
+          exit "$code"
+      - name: Run the fixed synthetic-only entry point
+        if: always()
+        run: |
+          set +e
+          node repro/stage4b-synthetic/evidence.cjs synthetic .work/stage4b-synthetic > .work/stage4b-synthetic/entry.stdout 2> .work/stage4b-synthetic/entry.stderr
+          code=$?
+          printf '%s\n' "$code" > .work/stage4b-synthetic/entry.exit
+          cat .work/stage4b-synthetic/entry.stderr >&2
+          exit "$code"
+      - name: Inventory exact original evidence
+        if: always()
+        run: node repro/stage4b-synthetic/evidence.cjs manifest .work/stage4b-synthetic
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: stage4b-synthetic-evidence
+          path: .work/stage4b-synthetic/
+          retention-days: 7
+          include-hidden-files: true
+          if-no-files-found: error
